@@ -1,0 +1,109 @@
+- content_for :sub_header do
+  = "#{@project.code} - #{@project.name}"
+
+- content_for :sub_header_opts do
+  - if can? :update, @project
+    = link_to edit_project_path(@project), class: 'btn btn-default' do
+      %i.fa.fa-cog
+      %span Configurar
+
+.content-wrapper
+  = render 'projects/sub_menu'
+
+  .content
+    .meeting-wrapper.meeting-activities-list.clearfix
+      .col-sm-6
+        .panel.panel-default.meeting-name
+          .panel-body
+            %h4.text-center
+              %i.fa.fa-circle.status{ class: "#{@meeting.status}" }
+              = link_to "#{@meeting.name} #{l(@meeting.starts_at, format: '%d/%m/%Y')}", meeting_path(@meeting)
+
+      .col-sm-6
+        - if @meeting.running?
+          .panel.panel-default.timer
+            .panel-heading
+              .panel-title Tiempo transcurrido
+
+            .panel-body
+              .timer-wrapper.text-center{ 'started-at' => @meeting.started_at }
+                %span.hours 00
+                %span :
+                %span.minutes 00
+                %span :
+                %span.seconds 00
+
+              .text-center
+                - if can? :update, @meeting
+                  = link_to stop_meeting_path(@meeting), method: :post, class: 'btn btn-link', data: { confirm: '¿Estás seguro que deseas finalizar la reunión? Esto enviará una minuta a cada participante de la reunión y dará inicio al proceso de evaluación de actividades con un plazo de 24 horas.' } do
+                    %i.fa.fa-stop
+                    %span Finalizar Reunión
+
+      .col-sm-12
+        .panel.panel-default.activities-panel
+          .panel-heading
+            .panel-title Actividades
+            
+            .pull-right
+              .text-label Filtrar por miembro
+              .dropdown
+                %button.btn-sm.btn.btn-default.dropdown-toggle{ data: { toggle: 'dropdown' } }
+                  %span= @assigned.nil? ? 'Todos' : @assigned.full_name
+                  %span.caret
+                
+                %ul.dropdown-menu.dropdown-menu-right
+                  %li{ class: "#{'active' if @assigned.nil?}" }= link_to 'Todos', activities_meeting_path(@meeting)
+                  - @project.project_members.each do |project_member|
+                    %li{ class: "#{'active' if @assigned == project_member}" }= link_to project_member.short_name, activities_meeting_path(@meeting, assigned_to: project_member.id)
+
+          .panel-body.activities-wrapper
+            .milestone-wrap
+
+              - if @activities.any?
+                .activities-list
+                  - @activities.each do |activity|
+                    .activity-item
+                      %span.assigned= activity.assigned.try(:short_name) or "Sin Asignar"
+
+                      %span.info-wrapper
+                        %span.name= activity.name
+                        %span.meta= "(#{relative_days(activity)})" unless activity.end_date.blank?
+
+                      - if activity.description?
+                        .description= activity.description
+
+-# - if @meeting.in_evaluation? && (activity.assigned.try(:user) == current_user)
+-#   .item-options{ style: 'padding-top: 1em;' }
+-#     - if activity.accepted?
+-#       .constraints.row
+-#         - activity.constraints.each do |constraint|
+-#           .constraint-wrapper.col-sm-12{ style: 'border-bottom: 1px solid #eee; padding: .5em 1em;' }
+-#             %span{ style: 'font-size: 1.2em;' }= "Restricción: #{constraint.name}"
+-#             %span{ style: 'color: #777; font-size: .9em;' }= relative_days(constraint)
+
+-#         .clearfix
+
+-#         .constraint-form.col-sm-6
+-#           = form_for activity.constraints.new, html: { class: 'form-horizontal' } do |f|
+-#             %h4 Agregar restricción
+-#             .form-group
+-#               = f.label :name, 'Nombre', class: 'control-label col-sm-2'
+-#               .col-sm-8
+-#                 = f.text_field :name, class: 'form-control', placeholder: 'Nombre de la restricción'
+
+-#             .form-group
+-#               = f.label :category_id, 'Categoría', class: 'control-label col-sm-2'
+-#               .col-sm-8
+-#                 = f.select :category_id, options_from_collection_for_select(@project.project_categories, 'id', 'name', nil), { include_blank: true, prompt: 'Seleccione' }, class: 'with-selectize'
+
+-#             .form-group
+-#               = f.label :end_date, 'Se libera el', class: 'control-label col-sm-2'
+-#               .col-sm-5
+-#                 = f.text_field :end_date, class: 'form-control with-datepicker', placeholder: 'DD/MM/YYYY'
+
+-#             = hidden_field_tag :meeting_id, @meeting.id
+-#             = f.hidden_field :activity_id, value: activity.id
+
+-#             %div{ style: 'margin-top: 1em;' }
+-#               = f.submit 'Guardar restricción', class: 'btn btn-sm btn-success'
+

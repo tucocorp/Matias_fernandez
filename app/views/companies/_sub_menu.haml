@@ -1,0 +1,20 @@
+.sub-menu-wrapper
+  %ul#sub-menu.nav.nav-tabs.navbar-left
+    %li{ class: "#{'active' if ['projects'].include?(params[:action])}" }
+      = link_to 'Proyectos', projects_company_path
+
+    %li{ class: "#{'active' if ['members'].include?(params[:action])}" }
+      = link_to 'Miembros', members_company_path
+
+    %li{ class: "#{'active' if ['edit', 'update'].include?(params[:action])}" }
+      = link_to 'Ajustes', edit_company_path(@company)
+
+  - if ['projects', 'users'].include?(params[:action])
+    .pull-right
+      %form.form-inline.quick-search{:action => ""}
+        .form-group
+          %input.form-control{type: 'text', name: 'q', placeholder: 'Buscar', value: params[:q].to_s}
+          - unless params[:type].blank?
+            %input{type: 'hidden', name: 'type', value: params[:type].to_s}
+
+  .clearfix

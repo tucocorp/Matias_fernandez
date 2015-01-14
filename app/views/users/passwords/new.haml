@@ -1,0 +1,19 @@
+%h1.signin-title Administra las restricciones de tus proyectos
+%p.signin-sub-title Crea proyectos, agrega actividades, identifica restricciones y controla sus cumplimientos.
+
+= form_for(resource, as: resource_name, url: password_path(resource_name), html: { class: 'recover-password', method: :post }) do |f|
+  %h3 ¿Olvidó su constraseña?
+
+  - unless devise_error_messages!.blank?
+    %p.alert.alert-danger= devise_error_messages!
+  
+  .form-group
+    %p Ingrese a continuación su nombre de usuario o correo electrónico y le enviaremos un correo con las instrucciones para cambiar su contraseña
+
+  .form-group
+    = f.text_field :login, class: 'form-control', placeholder: 'Nombre de usuario o Correo', autofocus: true, autocomplete: 'off'
+  
+  .form-group.text-center
+    = f.submit "Recuperar contraseña", class: 'btn btn-primary'
+  
+  = link_to 'Iniciar sesión', new_user_session_path

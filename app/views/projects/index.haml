@@ -1,0 +1,54 @@
+- content_for :sub_header do
+  .fa.fa-briefcase
+  = link_to 'Proyectos', projects_path
+
+- content_for :sub_header_opts do
+  = link_to '#', class: 'btn btn-success new-project-btn' do
+    %i.fa.fa-plus
+    %span Crear proyecto
+
+.sub-menu-wrapper
+  %ul#sub-menu.nav.nav-tabs.navbar-left
+    %li{ class: "#{'active' if params[:type].nil?}" }
+      = link_to 'Proyectos activos', projects_path
+
+    %li{ class: "#{'active' if params[:type].to_s == 'archived'}" }
+      = link_to 'Proyectos archivados', projects_path(type: 'archived')
+
+    %li{ class: "#{'active' if params[:type].to_s == 'all'}" }
+      = link_to 'Todos los proyectos', projects_path(type: 'all')
+
+  .pull-right
+    %form.form-inline.quick-search{:action => ""}
+      .form-group
+        %input.form-control{type: 'text', name: 'q', placeholder: 'Buscar', value: params[:q].to_s}
+        - unless params[:type].blank?
+          %input{type: 'hidden', name: 'type', value: params[:type].to_s}
+
+  .clearfix
+
+.content
+  - if @projects.any?
+    .projects-list
+      - @projects.each do |project|
+        = link_to last_planner_project_path(project), class: 'clearfix' do
+          .col-sm-6
+            .icon
+              %i.fa.fa-briefcase
+            .info
+              .project-name= project.name
+              .meta= t('project.members', count: project.members.count)
+          .col-sm-3
+            .meta Organizador
+            .company-name= project.projectable.full_name
+  
+      .paginator-wrapper= paginate @projects
+  - else
+    .empty-list
+      %h4 No se encuentra ningún proyecto
+      = link_to new_project_path, class: 'btn btn-success new-project-btn' do
+        .fa.fa-plus-circle
+        %span Crear proyecto
+
+:javascript
+  var userCompanies = #{companies_as_json(@companies)};

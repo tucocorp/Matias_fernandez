@@ -1,0 +1,65 @@
+es:
+  activerecord:
+    models:
+      project: Proyecto
+    attributes:
+      user:
+        username: Nombre de usuario
+        login: Nombre de usuario o Correo
+        name: Nombre
+        last_name: Apellido
+        email: Correo electrónico
+        position: Cargo
+        date_of_birth: Fecha de nacimiento
+        address: Dirección
+        phone_number: Teléfono
+        current_password: Contraseña actual
+        password: Contraseña
+        password_confirmation: Repetir contraseña
+        avatar: Imagen de perfil
+      company:
+        name: Nombre
+        initials: Iniciales
+        contact_name: Nombre de contacto
+        email: Correo electrónico
+        status: Estado
+        business_name: Razón social
+        description: Descripción
+        website: Sitio web
+      project:
+        name: Nombre
+        code: Código
+        description: Descripción
+        status: Estado
+        company: Organizador
+        manager: Jefe de projecto
+        projectable: Organizador
+      list:
+        name: Nombre
+        description: Descripción
+        list_type: Tipo
+      activity:
+        code: Código
+        name: Nombre
+        date: Fecha
+        assigned: Responsable
+        parent: Actividad superior
+        critical_level: Nivel crítico
+      constraint:
+        code: Código
+        name: Nombre
+        date: Fecha Termino
+        assigned: Responsable
+        status: Estado
+      milestone:
+        name: Entregable
+        date: Fecha Termino
+        assigned: Responsable
+        list: Fase
+      meeting:
+        name: Título
+        when: Cuando
+        location: Lugar
+        type: Tipo
+        list: Fase
+        attendees: Asistentes

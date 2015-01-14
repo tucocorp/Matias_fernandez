@@ -1,0 +1,15 @@
+.sub-title.clearfix
+  - if params[:parent_id].nil?
+    %h2 Nueva actividad
+  - else
+    %h2 Nueva tarea
+
+  .pull-right
+    = link_to 'Cancelar', activities_project_path(@project), class: 'btn btn-default'
+    = link_to 'Guardar', nil, class: 'btn btn-success', 'data-submit' => 'activity_form'
+
+.separator
+
+.main-content
+  = render 'form'
+  .clearfix

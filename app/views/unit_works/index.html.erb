@@ -1,0 +1,29 @@
+<h1>Listing unit_works</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Start date</th>
+      <th>End date</th>
+      <th>Activity</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @unit_works.each do |unit_work| %>
+      <tr>
+        <td><%= unit_work.start_date %></td>
+        <td><%= unit_work.end_date %></td>
+        <td><%= unit_work.activity_id %></td>
+        <td><%= link_to 'Show', unit_work %></td>
+        <td><%= link_to 'Edit', edit_unit_work_path(unit_work) %></td>
+        <td><%= link_to 'Destroy', unit_work, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Unit work', new_unit_work_path %>

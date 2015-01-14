@@ -1,0 +1,24 @@
+%h1.signin-title Administra las restricciones de tus proyectos
+%p.signin-sub-title Crea proyectos, agrega actividades, identifica restricciones y controla sus cumplimientos.
+
+= form_for(resource, as: resource_name, url: invitation_path(resource_name), html: { class: 'login-form' }) do |f|
+  %h3 Completa los campos para iniciar
+  %hr
+  - unless devise_error_messages!.blank?
+    %p.alert.alert-danger= devise_error_messages!
+
+  .form-group
+    = f.text_field :username, class: 'form-control', placeholder: 'Nombre de usuario', autofocus: true, autocomplete: 'off'
+
+  .form-group
+    = f.text_field :email, class: 'form-control', placeholder: 'Correo electronico', autofocus: true, autocomplete: 'off'
+
+  .form-group
+    = f.password_field :password, class: 'form-control', placeholder: 'Contraseña', autocomplete: 'off'
+
+    .form-group
+    = f.password_field :password_confirmation, class: 'form-control', placeholder: 'Repetir contraseña', autocomplete: 'off'
+  
+  .form-group
+    = f.hidden_field :invitation_token
+    = f.submit "Registrarme", class: 'btn btn-primary btn-block'

@@ -1,0 +1,126 @@
+.dashboard-wrapper{
+  min-height: 500px;
+  padding: 1em 0;
+
+  .panel.panel-default{
+    .panel-body{
+
+      .items-list{
+        padding: 0;
+
+        .heading{
+          border-bottom: 1px solid #F4F6F9;
+          color: #777;
+          font-size: .9em;
+          margin: 0;
+          padding: .5em;
+          text-transform: uppercase;
+
+          &:nth-child(n+2){
+            margin-top: 1em;
+          }
+        }
+
+        .item{
+          display: block;
+          border-bottom: 1px solid #F4F6F9;
+          padding: .5em 0;
+          text-decoration: none;
+
+          .icon,
+          span{
+            display: inline-block;
+            vertical-align: middle;
+          }
+
+          .icon{
+            background: #eee;
+            border-radius: 50%;
+            color: #000;
+            height: 40px;
+            text-align: center;
+            margin-left: .5em;
+            margin-right: .5em;
+            width: 40px;
+            line-height: 2.8em;
+          }
+
+          .meta{
+            color: #888;
+            font-style: italic;
+            font-size: .85em;
+          }
+
+          &:hover{
+            background: #F4F6F9;
+          }
+        }
+      }
+
+      .items-list.constraints-list,
+      .items-list.activities-list{
+        .item{
+          .btn-group{
+            margin-left: .5em;
+            vertical-align: top;
+
+            .btn{
+              background-color: transparent;
+              border: 0;
+              padding: 1px 4px;
+
+              &:hover,
+              &:focus{
+                background-color: #eee;
+              }
+            }
+          }
+
+          .checkbox-inline{
+            margin-left: .2em;
+            width: 90%;
+
+            &.removed{
+              opacity: .6;
+
+              span.name{
+                text-decoration: line-through;
+              }
+            }
+          }
+        }
+      }
+
+      .items-list.activities-list{
+        .item{
+          .responsible{
+            background: #eee;
+            border-radius: 2px;
+            font-size: .85em;
+            padding: .2em .5em;
+          }
+
+          .name{
+            margin-left: .4em;
+          }
+
+          .status{
+            margin-left: .5em;
+
+            &.pending{
+              color: #FFCE54;
+            }
+
+            &.finished{
+              color: #8CC152;
+            }
+
+            &.unfinished{
+              color: #DA4453;
+            }
+          }
+        }
+      }
+    }
+  }
+}

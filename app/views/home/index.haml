@@ -1,0 +1,44 @@
+-# #calendar
+
+-# :javascript
+-#   $(function(){
+-#     $('#calendar').fullCalendar({
+-#       // defaultView: 'agendaWeek',
+-#       selectable: true,
+-#       editable: true,
+-#       select: function(start, end, e, view){
+-#         $('#calendar').fullCalendar('renderEvent', {
+-#           title: 'test',
+-#           start: start,
+-#           end: end
+-#         });
+-#       },
+-#       eventDrop: function(event, delta, revertFunc, e, ui, view){
+-#         console.log(event)
+-#       },
+-#       eventMouseover: function(event, jsEvent, view){
+-#         console.log('lla');
+-#       },
+-#       header: {
+-#         left: 'prev,next today',
+-#         center: 'title',
+-#         right: 'month,agendaWeek,agendaDay'
+-#       },
+-#       events: [
+-#         {
+-#           title: 'All Day Event',
+-#           start: '2014-09-01'
+-#         },
+-#         {
+-#           title: 'Long Event',
+-#           start: '2014-09-07',
+-#           end: '2014-09-10'
+-#         },
+-#         {
+-#           id: 999,
+-#           title: 'Repeating Event',
+-#           start: '2014-09-09T16:00:00'
+-#         },
+-#       ]
+-#     });
+-#   });

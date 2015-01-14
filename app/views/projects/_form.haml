@@ -1,0 +1,92 @@
+.panel.panel-default.col-sm-8.col-sm-offset-2
+  .panel-heading
+    .panel-title= @project.persisted? ? 'Editar información del Proyecto' : 'Nuevo Proyecto'
+
+  = form_for @project, url: @project.persisted? ? project_path(company_id: params[:company_id]) : projects_path(company_id: params[:company_id]), html: { class: 'form-horizontal', id: 'project_form' } do |f|
+
+    .panel-body
+      - if @project.errors.any?
+        .alert.alert-warning
+          - @project.errors.full_messages.each do |e|
+            = e
+            %br/
+
+      .form-content.clearfix
+        .col-sm-12
+          .form-group
+            = f.label :name, class: 'control-label col-sm-3'
+            .col-sm-8
+              = f.text_field :name, class: 'form-control', autofocus: true, autocomplete: 'off'
+        
+        .col-sm-12
+          .form-group
+            = f.label :description, class: 'control-label col-sm-3'
+            .col-sm-8
+              = f.text_area :description, class: 'form-control', rows: 4
+
+        - if @project.persisted? && can?(:archive, @project)
+          .col-sm-12
+            .form-group
+              = f.label :status, class: 'control-label col-sm-3'
+              .col-sm-8
+                %label.radio-inline
+                  = f.radio_button :status, 'active'
+                  %span Activo
+
+                %label.radio-inline
+                  = f.radio_button :status, 'archived'
+                  %span Archivado
+
+        .col-sm-12
+          .form-group
+            = f.label :projectable, class: 'control-label col-sm-3'
+            .col-sm-8
+              %label.radio-inline
+                = f.radio_button :projectable_type, 'User', class: 'projectable-type'
+                %span Proyecto personal
+              
+              %label.radio-inline
+                = f.radio_button :projectable_type, 'Company', class: 'projectable-type'
+                %span Proyecto de empresa
+
+
+        .col-sm-12.company-list-select.hidden
+          .form-group
+            = f.label 'Empresa', class: 'control-label col-sm-3'
+
+            .col-sm-8
+              = f.select :projectable_id, options_from_collection_for_select(current_user.my_companies.all, 'id', 'full_name', @project.projectable_id), { include_blank: true, prompt: 'Seleccione' }, class: 'with-selectize'
+
+        - if @project.persisted? && can?(:destroy, @project)
+          .col-sm-12
+            .form-group
+              = label_tag nil, nil, class: 'control-label col-sm-3'
+
+              .col-sm-8
+                = link_to 'Eliminar Proyecto', project_path(@project), method: :delete, class: 'btn btn-link btn-danger', data: { confirm: "¿Está seguro que desea eliminar el proyecto #{@project.name}?" }
+
+    .panel-footer
+      .form-actions.text-center
+        = f.submit 'Guardar', class: 'btn btn-success'
+        = f.hidden_field :projectable_id, value: current_user.id, class: 'hidden-user-id'
+
+:javascript
+  $(function(){
+    var selectize = $('.with-selectize')[0].selectize;
+
+    $('.projectable-type').on('change', function(e){
+      var selected_value = $('.projectable-type:checked').val();
+
+      if( selected_value == 'Company' ){
+        $('.company-list-select').removeClass('hidden');
+        $('.hidden-user-id').attr('disabled', 'disabled');
+        selectize.enable();
+      }else{
+        $('.company-list-select').addClass('hidden');
+        $('.hidden-user-id').removeAttr('disabled');
+        selectize.disable();
+      }
+    });
+
+    $('.projectable-type').trigger('change');
+  });

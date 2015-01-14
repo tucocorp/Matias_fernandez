@@ -1,0 +1,108 @@
+.panel.panel-default.col-sm-8.col-sm-offset-2
+  .panel-heading
+    .panel-title
+      = @meeting.persisted? ? 'Editar reunión' : 'Nueva reunión'
+
+  = form_for @meeting, html: { class: 'form-horizontal meeting-form' } do |f|
+    .panel-body
+      .heading Tipo de reunión
+
+      .form-group
+        = f.label :type, class: 'control-label col-sm-2'
+        .col-sm-8
+          -# %label.radio-inline
+          -#   = f.radio_button :type, 'normal', disabled: true
+          -#   %span Reunión
+
+          %label.radio-inline
+            = f.radio_button :type, 'pull_planning'
+            %span Sesión de Pull Planning
+
+      .form-group.list-select-wrapper
+        = f.label :list, class: 'control-label col-sm-2'
+        -# .col-sm-8
+        -#   = select_tag :list_id, options_from_collection_for_select(@project.lists, 'id', 'full_name', @list.id), include_blank: true, prompt: 'Seleccione un Hito', class: 'list-id with-selectize'
+        .col-sm-8
+          %p.form-control-static= @list.full_name
+
+      %h5.heading Información general
+
+      .form-group
+        = f.label :name, class: 'control-label col-sm-2'
+        .col-sm-8
+          = f.text_field :name, class: 'form-control'
+
+      .form-group.when
+        = f.label :when, class: 'control-label col-sm-2'
+
+        .col-sm-9
+          = f.text_field :starts_at_date, value: @meeting.starts_at.try(:strftime, '%d/%m/%Y'), class: 'form-control date start', placeholder: 'dd/mm/aaaa'
+          = f.text_field :starts_at_time, value: @meeting.starts_at.try(:strftime, '%H:%M'), class: 'form-control time start', placeholder: 'H:m'
+
+          %span Hasta
+
+          = f.text_field :ends_at_time, value: @meeting.ends_at.try(:strftime, '%H:%M'), class: 'form-control time end', placeholder: 'H:m'
+          = f.text_field :ends_at_date, value:  @meeting.ends_at.try(:strftime, '%d/%m/%Y'), class: 'form-control date end', placeholder: 'dd/mm/aaaa'
+
+      .form-group
+        = f.label :attendees, class: 'control-label col-sm-2'
+        .col-sm-8
+          %select.attendee-ids.contacts{name: 'user_ids[]'}
+            %option{:value => ""} Seleccione
+
+      .form-group
+        = f.label :location, class: 'control-label col-sm-2'
+        .col-sm-8
+          = f.text_field :location, class: 'form-control location'
+
+      .form-group
+        .col-sm-2
+        .col-sm-8
+          .map_canvas
+
+      %h5.heading Temas a tratar
+
+      .form-group
+        = f.fields_for :topics do |topic|
+          = topic.label :name, 'Titulo del tema', class: 'control-label col-sm-2'
+          .col-sm-8
+            = topic.text_field :name, class: 'form-control'
+
+          .clearfix{ style: 'padding: .5em 0;' }
+
+          = topic.label :descripción, class: 'control-label col-sm-2'
+          .col-sm-8
+            = topic.text_area :description, class: 'form-control'
+
+          .clearfix{ style: 'padding: .5em 0;' }
+          
+          = topic.label :duration, 'Duración', class: 'control-label col-sm-2'
+          .col-sm-4
+            = topic.text_field :duration, class: 'form-control', style: 'display: inline-block; width: 60%;'
+            %span Minutos
+
+          .clearfix{ style: 'padding: .5em 0;' }
+
+          = topic.label :presenter, 'Presentador', class: 'control-label col-sm-2'
+          .col-sm-6
+            = topic.hidden_field :id
+            = topic.select :presenter_id, options_from_collection_for_select(@project.members, 'id', 'full_name', @attendee_ids), {prompt: 'Seleccione los asistentes'}, {class: 'with-selectize'}
+
+      %h5.heading Opciones
+
+      .form-group
+        = f.label :send_notification, 'Notificar', class: 'control-label col-sm-2'
+        .col-sm-8
+          %label.checkbox-inline
+            = check_box_tag :send_notification, 1, checked: true
+            %span Envíar notificaciones por correo electrónico
+
+      .form-actions.text-center
+        = f.hidden_field :project_id, value: @project.id
+        = hidden_field_tag :list_id, @list.id
+        = f.submit 'Guardar', class: 'btn btn-success'
+        = link_to 'Cancelar', meetings_project_path(@project), class: 'btn btn-link'
+
+:javascript
+  window.projectMembers  = #{users_as_json(@project.members)};
+  window.selectedMembers = #{users_as_json(@meeting.users.any? ? @meeting.users : @project.members)};

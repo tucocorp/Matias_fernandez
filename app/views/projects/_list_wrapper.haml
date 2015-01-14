@@ -1,0 +1,59 @@
+.list-wrapper.clearfix
+  .col-sm-1.timeline-item
+    .circle
+
+  .col-sm-11.list-heading
+    .list-name.pull-left
+      = link_to "#{list.code} #{list.name}", list_path(list)
+      
+      %span= relative_days(list.latest_milestone)
+
+    - if can? :update, @project
+      .list-options.pull-right
+        = link_to '#edit-list-form', class: 'edit-list-btn', 'list-id' => list.id do
+          %span Editar
+        = "|"
+        = link_to '#new-milestone-form', class: 'new-milestone-btn', 'list-id' => list.id, 'end-date' => list.milestones.first.end_date.strftime("%d/%m/%Y") do
+          %span Agregar Hito
+        = "|"
+        = link_to 'Agendar sesión de Pull Planning', new_meeting_path(project_id: @project.id, list_id: list.id, type: 'pull_planning')
+
+  .col-sm-12.list-content
+    - list.milestones.order(end_date: :asc).each_with_index do |milestone, index|
+
+      
+      - milestone.activities.each do |activity|
+        .col-sm-1.timeline-item
+          %div{ style: 'width: 104px; height: 30px;' }
+
+        .list-item.clearfix
+          .item-info.pull-left
+            .item-code-resposible
+              %span.code= activity.code
+              %span.responsible= activity.assigned.try(:short_name) or "Sin Asignar"
+
+            .item-name-date
+              %span.name= activity.name
+              %span.date= relative_days(activity)
+
+      .col-sm-1.timeline-item
+        .rhombus
+
+      .list-item.milestone.clearfix
+        -# .flag.fa.pull-left.with-tooltip{ title: "#{ (milestone.latest)? 'Hito final' : 'Hito intermedio' }", class: "#{ (milestone.latest)? 'fa-flag-checkered' : 'fa-flag-o' }" }
+
+        .item-info.pull-left
+          .item-code-resposible
+            %span.code= milestone.code
+            %span.responsible= milestone.assigned.try(:short_name) or "Sin Asignar"
+
+          .item-name-date
+            -# %span.name= link_to milestone.name, milestone_path(milestone)
+            %span.name= milestone.name
+            %span.date= relative_days(milestone)
+
+        .list-options.pull-right
+          - if can? :update, @project
+            = link_to nil, class: 'btn btn-sm btn-default edit-milestone-btn', 'milestone-id' => milestone.id do
+              %i.fa.fa-pencil
+              %span Editar

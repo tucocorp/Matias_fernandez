@@ -1,0 +1,265 @@
+- content_for :sub_header do
+  = link_to 'Proyectos', projects_path
+  = "/"
+  = link_to @project.name, plan_project_path(@project)
+  = "/"
+  = link_to @list.name, list_path(@list)
+  = "/ #{@milestone.code}"
+
+- content_for :sub_header_opts do
+  - if can? :update, @project
+    = link_to start_evaluation_milestone_path(@milestone), class: 'btn btn-default', method: :post do
+      %i.fa.fa-check-square-o
+      %span Envíar a evaluación
+
+    = link_to edit_project_path(@project), class: 'btn btn-default' do
+      %i.fa.fa-cog
+      %span Configurar
+
+
+= render 'projects/sub_menu'
+
+.content
+  -# .alert.alert-info.text-center
+  -#   %p Agrega las actividades que se deben realizar para completar el hito. Comienza desde la última actividad necesaria para que el hito se pueda cumplir.
+
+  .list-wrapper.clearfix
+    .col-sm-6.list-content
+      .list-item.clearfix.text-center
+        %a.btn.btn-success.new-activity-btn{href: '#new-activity-form'} Agregar actividad
+
+      - @milestone.activities.order(start_date: :asc).each do |activity|
+        .list-item.clearfix
+          .item-info.pull-left
+            .item-code-resposible
+              %span.code= activity.code
+              %span.responsible= activity.assigned.try(:full_name) or "Sin Asignar"
+
+            .item-name-date
+              %span.name= activity.name
+              %span.date= relative_days(activity)
+
+          .list-options.pull-right
+            = link_to '#edit-activity-form', class: 'btn btn-xs btn-default edit-activity-btn', 'activity-id' => activity.id do 
+              %i.fa.fa-pencil
+              %span Editar
+            = link_to 'Eliminar', activity_path(activity), method: :delete, class: 'btn btn-xs btn-default', data: { confirm: '¿Está seguro que desea eliminar esta actividad?' }
+
+      .list-item.milestone.clearfix
+        .flag.fa.pull-left.with-tooltip{ title: "#{ (@milestone.latest)? 'Hito final' : 'Hito intermedio' }", class: "#{ (@milestone.latest)? 'fa-flag-checkered' : 'fa-flag-o' }" }
+
+        .item-info.pull-left
+          .item-code-resposible
+            %span.code= "H-#{@milestone.id.to_s.rjust(4, '0')}"
+            %span.responsible= @milestone.assigned.try(:full_name) or "Sin Asignar"
+
+          .item-name-date
+            %span.name= @milestone.name
+            %span.date= relative_days(@milestone)
+
+        .list-options.pull-right
+          - if can? :update, @project
+            = link_to nil, class: 'btn btn-sm btn-default edit-milestone-btn', 'milestone-id' => @milestone.id do
+              %i.fa.fa-pencil
+              %span Editar
+
+    .col-sm-6{ style: 'border-left: 2px solid #eee; min-height: 600px;' }
+      .row.text-center{ style: 'border-bottom: 2px solid #eee; padding: .8em 0;' }
+        %h4 Minuta: Sesión de Pull Planning 20/10/2014
+      
+      .col-sm-12
+        %h5 
+          %strong Tiempo transcurrido
+
+        %p.text-center{ style: 'font-size: 3em;' }
+          %span 01:10:30
+
+
+        %h5 
+          %strong Temas a tratar
+
+        %form{:action => ""}
+          .form-group
+            %label.checkbox-inline
+              %input{:type => "checkbox"}/
+              %span Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+
+            .form-group{ style: 'background: #eee; padding: .5em 0 .5em 1.5em; margin: .5em 0;' }
+              Consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+
+            .form-group{ style: 'background: #eee; padding: .5em 0 .5em 1.5em; margin: .5em 0;' }
+              Consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+
+            .form-group{ style: 'background: #eee; padding: .5em 0 .5em 1.5em; margin: .5em 0;' }
+              Consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+
+            .form-group.text-right{ style: 'padding: .5em 0 .5em 1.5em; margin: .5em 0;' }
+              %a.btn.btn-link{:href => ""} + Agregar comentario
+
+            %br/
+
+            %label.checkbox-inline
+              %input{:type => "checkbox"}/
+              %span Tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam
+
+            .form-group.text-right{ style: 'padding: .5em 0 .5em 1.5em; margin: .5em 0;' }
+              %a.btn.btn-link{:href => ""} + Agregar comentario
+            
+            %br/
+            
+            %label.checkbox-inline
+              %input{:type => "checkbox"}/
+              %span Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+
+            .form-group.text-right{ style: 'padding: .5em 0 .5em 1.5em; margin: .5em 0;' }
+              %a.btn.btn-link{:href => ""} + Agregar comentario
+        
+        %h5
+          %strong Acuerdos
+
+        .alert.alert-info Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet est architecto iste nisi numquam, distinctio blanditiis reprehenderit aspernatur, ullam delectus eligendi facilis corporis vero perferendis, temporibus aut aliquid ad. Nobis!
+
+        %form{:action => ""}
+          .form-group
+            %input.form-control{:type => "text"}/
+
+          .form-group
+            %input.form-control{:type => "text"}/
+
+          .form-group
+            %input.form-control{:type => "text"}/
+
+        %h5
+          %strong Opciones
+
+        .form-group.text-center
+          %a.btn.btn-success{:href => ""} Guardar
+          %a.btn.btn-primary{:href => ""} Envíar
+
+  .clearfix
+
+= render 'projects/project_modals'
+
+.modal.animated.pulse#new-activity-form
+  .modal-dialog{ style: 'width: 800px;' }
+    .modal-content
+      .modal-header
+        %button{ type: "button", class: "close", 'data-dismiss' => "modal" } &times;
+        %h4.modal-title.text-center Nueva actividad
+
+      = form_for Activity.new, html: { class: 'form-horizontal', id: 'list_form' } do |f|
+        .modal-body
+          .form-group
+            = f.label :name, class: 'control-label col-sm-3'
+            .col-sm-8
+              = f.text_field :name, class: 'form-control', autofocus: true
+
+          .form-group
+            = f.label :description, class: 'control-label col-sm-3'
+            .col-sm-8
+              = f.text_area :description, class: 'form-control', rows: 4, placeholder: '¿Qué se realizará específicamente?'
+
+          .form-group
+            = f.label :assigned, class: 'control-label col-sm-3'
+            .col-sm-8
+              = f.select :assigned_id, options_from_collection_for_select(@project.project_members, 'id', 'full_name', nil), { include_blank: true, prompt: 'Seleccione' }, class: 'with-selectize'
+
+          .form-group
+            = label_tag :effort, 'Esfuerzo', class: 'control-label col-sm-3'
+            .col-sm-8
+              .input-group
+                = f.text_field :effort, class: 'form-control'
+                .input-group-btn
+                  %button.btn.btn-default.dropdown-toggle{ data: { toggle: 'dropdown'} }
+                    Horas
+                    %span.caret
+
+                  %ul.dropdown-menu.dropdown-menu-right
+                    %li
+                      %a{:href => ""} Horas
+                    %li
+                      %a{:href => ""} Minutos
+
+          .form-group.date-range{ 'max-date' => @milestone.end_date.strftime('%d/%m/%Y') }
+            = label_tag 'dates', 'Duración', class: 'control-label col-sm-3'
+
+            .col-sm-4
+              = f.text_field :start_date, class: 'form-control start-date', placeholder: 'Fecha de Inicio'
+
+            .col-sm-4
+              = f.text_field :end_date, class: 'form-control end-date', placeholder: 'Fecha de Término'
+
+          .form-group
+            .col-sm-3
+
+            .col-sm-8
+              %p.form-control-static.duration-days 0 Días
+
+              %label.radio-inline
+                = f.radio_button :date_type, :working, checked: true, class: 'date-type'
+                %span Laborales
+
+              %label.radio-inline
+                = f.radio_button :date_type, :calendar, class: 'date-type'
+                %span Calendario
+
+        .modal-footer
+          = hidden_field_tag :milestone_id, @milestone.id
+          = submit_tag 'Guardar', class: 'btn btn-success'
+          = link_to 'Cancelar', '#', class: 'btn btn-link', data: { dismiss: 'modal' }
+
+
+.modal.animated.pulse#edit-activity-form
+  .modal-dialog{ style: 'width: 800px;' }
+    .modal-content
+      .modal-header
+        %button{ type: "button", class: "close", 'data-dismiss' => "modal" } &times;
+        %h4.modal-title.text-center Editar actividad
+
+      = form_for :activity, method: :put, html: { class: 'form-horizontal', id: 'edit_activity_form' } do |f|
+        .modal-body
+          .form-group
+            = f.label :name, class: 'control-label col-sm-3'
+            .col-sm-8
+              = f.text_field :name, class: 'form-control', autofocus: true
+
+          .form-group
+            = f.label :description, class: 'control-label col-sm-3'
+            .col-sm-8
+              = f.text_area :description, class: 'form-control', rows: 4, placeholder: '¿Qué se realizará específicamente?'
+
+          .form-group
+            = f.label :assigned, class: 'control-label col-sm-3'
+            .col-sm-8
+              = f.select :assigned_id, options_from_collection_for_select(@project.project_members, 'id', 'full_name', nil), { include_blank: true, prompt: 'Seleccione' }, class: 'with-selectize'
+
+          .form-group.date-range{ 'max-date' => @milestone.end_date.strftime('%d/%m/%Y') }
+            = label_tag 'dates', 'Duración', class: 'control-label col-sm-3'
+
+            .col-sm-4
+              = f.text_field :start_date, class: 'form-control start-date', placeholder: 'Fecha de Inicio'
+
+            .col-sm-4
+              = f.text_field :end_date, class: 'form-control end-date', placeholder: 'Fecha de Término'
+
+          .form-group
+            .col-sm-3
+
+            .col-sm-8
+              %p.form-control-static.duration-days 0 Días
+
+              %label.radio-inline
+                = f.radio_button :date_type, :working, checked: true, class: 'date-type working'
+                %span Laborales
+
+              %label.radio-inline
+                = f.radio_button :date_type, :calendar, class: 'date-type calendar'
+                %span Calendario
+
+        .modal-footer
+          .pull-left
+            = link_to 'Eliminar', nil, method: :delete, class: 'btn btn-default destroy-activity-btn hidden', data: { confirm: '¿Está seguro que desea eliminar esta actividad?' }
+          .pull-right
+            = hidden_field_tag :milestone_id, @milestone.id
+            = submit_tag 'Guardar', class: 'btn btn-success'
+            = link_to 'Cancelar', '#', class: 'btn btn-link', data: { dismiss: 'modal' }

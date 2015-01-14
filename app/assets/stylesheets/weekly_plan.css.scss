@@ -1,0 +1,96 @@
+.weekly-plan-wrapper{
+  .make-ready{
+    background: #EFF3F8;
+    border-bottom: 1px solid #ddd;
+    min-height: 90px;
+    padding: 1em;
+
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
+
+    .activity{
+      box-shadow: none;
+    }
+
+    .empty{
+      color: #888;
+      font-size: 1.4em;
+      padding: 1em;
+      text-transform: uppercase;
+      text-align: center;
+      width: 100%;
+    }
+  }
+
+  .activity{
+    background: #FFF;
+    border-radius: 2px;
+    box-shadow: 0 0 10px rgba(0,0,0, .3);
+    display: inline-block;
+    margin: 0 .5em;
+    min-height: 60px;
+    padding: 1em;
+    vertical-align: top;
+    width: 260px;
+    white-space: normal;
+
+    .meta{
+      color: #888;
+      font-size: .85em;
+      font-style: italic;
+    }
+  }
+
+  .calendar{
+    background: #FFF;
+    padding: 1em 0;
+  }
+}
+
+.fc th{
+  font-weight: normal;
+  text-transform: uppercase;
+  padding: 1em 0;
+}
+
+.fc-toolbar{
+  .fc-left{
+    padding-top: .5em;
+    padding-left: .5em;
+  }
+
+  .fc-right{
+    padding-top: .5em;
+    padding-right: .5em;
+  }
+
+  button{
+    background: #FFF;
+    border: 1px solid #ccc;
+    border-radius: 2px !important;
+    box-shadow: none;
+    outline: none;
+
+    &:hover{
+      background: #eee !important;
+    }
+  }
+}
+
+.fc-state-disabled,
+.fc-state-active{
+  background: #eee !important;
+}
+
+.fc-event{
+  background: #5D9CEC;
+  border: 0;
+  border-radius: 2px;
+  margin: .5em;
+  padding: .5em;
+}
+
+.fc-day-grid-event > .fc-content{
+  white-space: normal;
+}

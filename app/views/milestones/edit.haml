@@ -1,0 +1,12 @@
+.sub-title.clearfix
+  %h2 Editar Hito
+
+  .pull-right
+    = link_to 'Cancelar', phases_project_path(@project), class: 'btn btn-default'
+    = link_to 'Guardar', nil, class: 'btn btn-success', 'data-submit' => 'milestone_form'
+
+.separator
+
+.main-content
+  = render 'form'
+  .clearfix

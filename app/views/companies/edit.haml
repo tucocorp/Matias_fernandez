@@ -1,0 +1,10 @@
+- content_for :sub_header do
+  .fa.fa-building
+  = link_to "#{@company.code} - #{@company.name}", company_path(@company)
+
+.content-wrapper
+  = render 'sub_menu'
+
+  .content
+    = render 'form'
+    .clearfix

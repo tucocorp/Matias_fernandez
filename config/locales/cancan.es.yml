@@ -1,0 +1,10 @@
+es:
+  unauthorized:
+    manage:
+      all: "No tienes permisos para acceder %{action} %{subject}."
+      user: "No tienes permisos para administrar otras cuentas de usuario."
+    read:
+      all: acceder
+      project: No tienes permisos para acceder a este proyecto
+    update:
+      project: "No tienes permisos para actualizar este proyecto."

@@ -1,0 +1,51 @@
+- content_for :sub_header do
+  .fa.fa-briefcase
+  = link_to "#{@project.code} - #{@project.name}", project_path(@project)
+
+- content_for :sub_header_opts do
+  -# = link_to new_meeting_path(project_id: @project), class: 'btn btn-success' do
+  -#   %i.fa.fa-plus
+  -#   %span Nueva reunión
+
+  - if can? :update, @project
+    = link_to edit_project_path(@project), class: 'btn btn-default' do
+      %i.fa.fa-cog
+      %span Configurar
+
+.content-wrapper
+  = render 'sub_menu'
+  .content
+    .items-list-wrapper.meetings-list.clearfix
+      - if @meetings.any?
+        - @meetings.each do |meeting|
+          .col-sm-12.list-item
+            .col-sm-5
+              .calendar
+                .month{ class: meeting.status }
+                  = l(meeting.starts_at, format: '%B')
+                .day= l(meeting.starts_at, format: '%d')
+              
+              .item-content
+                = link_to meeting_path(meeting), class: 'main-link' do
+                  %span.name= meeting.name
+
+                .meta
+                  %span= l(meeting.starts_at, format: '%d/%m/%Y %H:%M')
+                  %span= "| #{meeting.attendees.count} Invitados"
+                  %span= "| #{ meeting.human_status}"
+                
+                .attendee
+                  - if current_user.is_attendee?(meeting)
+                    %i.fa.fa-check
+                    Eres participante
+                
+            .col-sm-7.options
+              .info= "#{meeting.attendees.accepted.count} Invitados asistirán"
+              .info= "#{meeting.attendees.refused.count} Invitados no asistirán"
+              .info= "#{meeting.attendees.pending.count} Invitados pendientes"
+      
+        .paginator-wrapper= paginate @meetings
+
+      - else
+        .empty-list
+          %h4 No hay reuniones agendadas

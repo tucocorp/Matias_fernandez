@@ -1,0 +1,42 @@
+- content_for :sub_header do
+  .fa.fa-building
+  = link_to "#{@company.code} - #{@company.name}", company_path(@company)
+
+- content_for :sub_header_opts do
+  = link_to '#', class: 'btn btn-success new-project-btn' do
+    %i.fa.fa-plus
+    %span Crear proyecto
+
+.content-wrapper
+  = render 'sub_menu'
+
+  .content
+    .items-list-wrapper.clearfix
+      - if @projects.any?
+        - @projects.each do |project|
+          .col-sm-12.list-item
+            .col-sm-6
+              = link_to project_path(project), class: 'main-link' do
+                .icon
+                  .fa.fa-briefcase
+                %span.name= "#{project.code} - #{project.name}"
+
+            .col-sm-6.options
+              .info= "#{project.members.count} Miembros"
+              = "|"
+              .info= project.human_status
+        .paginator-wrapper= paginate @projects
+
+      - else
+        .empty-list
+          %h4 No se encuentra ningún proyecto
+          = link_to '#', class: 'btn btn-success new-project-btn' do
+            %i.fa.fa-plus
+            %span Crear proyecto
+          
+          / = link_to new_project_path(company_id: @company), class: 'btn btn-success' do
+          /   .fa.fa-plus-circle
+          /   %span Crear proyecto
+
+:javascript
+  window.userCompanies = #{companies_as_json(@companies)};

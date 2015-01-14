@@ -1,0 +1,8 @@
+- content_for :sub_header do
+  = link_to 'Proyectos', projects_path
+  = "/ Nuevo Proyecto"
+
+.content
+  .form-wrapper
+    = render 'form'
+    .clearfix

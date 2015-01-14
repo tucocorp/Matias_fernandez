@@ -1,0 +1,29 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  code: 1
+  name: MyString
+  description: MyText
+  status: 1
+  duration: 1
+  effort: 2014-10-15 10:17:41
+  evaluation: 1
+  start_date: 2014-10-15
+  end_date: 2014-10-15
+  assigned_id: 1
+  list_id: 1
+  mileston_id: 1
+
+two:
+  code: 1
+  name: MyString
+  description: MyText
+  status: 1
+  duration: 1
+  effort: 2014-10-15 10:17:41
+  evaluation: 1
+  start_date: 2014-10-15
+  end_date: 2014-10-15
+  assigned_id: 1
+  list_id: 1
+  mileston_id: 1

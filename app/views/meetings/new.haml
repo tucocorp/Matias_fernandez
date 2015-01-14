@@ -1,0 +1,17 @@
+- content_for :sub_header do
+  .fa.fa-briefcase
+  = link_to "#{@project.code} - #{@project.name}", project_path(@project)
+
+- content_for :sub_header_opts do
+  - if can? :update, @project
+    = link_to edit_project_path(@project), class: 'btn btn-default' do
+      %i.fa.fa-cog
+      %span Configurar
+
+- content_for :head do
+  = javascript_include_tag 'http://maps.googleapis.com/maps/api/js?sensor=false&libraries=places'
+
+.content-wrapper
+  = render 'projects/sub_menu'
+  .content
+    = render 'form'

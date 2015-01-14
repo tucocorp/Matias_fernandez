@@ -1,0 +1,21 @@
+.sub-menu-wrapper
+  %ul#sub-menu.nav.nav-tabs.navbar-left
+    %li{ class: "#{'active' if ['weekly_plan'].include?(params[:action])}" }
+      = link_to 'Weekly Plan', weekly_plan_project_path(@project)
+
+    %li{ class: "#{'active' if ['last_planner'].include?(params[:action])}" }
+      = link_to 'Look Ahead', last_planner_project_path(@project)
+
+    %li{ class: "#{'active' if (['plan'].include?(params[:action]) || ['lists'].include?(params[:controller]))}" }
+      = link_to 'Plan maestro', plan_project_path(@project)
+
+    %li{ class: "#{'active' if ['members'].include?(params[:action])}" }
+      = link_to 'Miembros', members_project_path(@project)
+
+    %li{ class: "#{'active' if ['meetings'].include?(params[:action]) || ['meetings'].include?(params[:controller])}" }
+      = link_to 'Reuniones', meetings_project_path(@project)
+
+    %li{ class: "#{'active' if ['edit'].include?(params[:action]) && params[:controller] == 'projects' }" }
+      = link_to 'Ajustes', edit_project_path(@project)
+
+  .clearfix

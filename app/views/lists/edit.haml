@@ -1,0 +1,13 @@
+.sub-title.clearfix
+  %h2 Editar fase/componente
+
+  .pull-right
+    = link_to 'Cancelar', activities_project_path(@project), class: 'btn btn-default'
+
+    = link_to 'Guardar', nil, class: 'btn btn-success', 'data-submit' => 'project_form'
+
+.separator
+
+.main-content
+  = render 'form'
+  .clearfix

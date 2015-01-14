@@ -1,0 +1,664 @@
+.meeting-form{
+  padding-top: 0;
+
+  .form-group{
+    padding: 0 1em;
+  }
+
+  .heading{
+    background: #E7F2FF;
+    margin: 0;
+    margin-bottom: 1em;
+    padding: .8em;
+  }
+
+  .when{
+    input{
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    .date{
+      width: 22%;
+    }
+
+    .time{
+      width: 17.8%;
+    }
+  }
+}
+
+.meetings-list{
+  background: #FFF;
+  border-radius: 2px;
+  margin: 0 1em;
+  padding: 1em;
+
+  .list-item{
+    .calendar{
+      background: #FFF;
+      border: 1px solid #ccc;
+      border-radius: 2px;
+      display: inline-block;
+      margin-right: 1em;
+      vertical-align: middle;
+      padding: .1em;
+
+      .month{
+
+        background: #3BAFDA;
+        color: #FFF;
+        margin: .3em;
+        padding: .2em 0;
+        text-align: center;
+        width: 100px;
+
+        &.running{
+           background: #8CC152;
+        }
+
+        &.ended{
+           background: #FFCE54;
+        }
+
+        &.in_evaluation{
+           background: #F6BB42;
+        }
+
+        &.evaluation_ended{
+           background: #DA4453;
+        }
+      }
+
+      .day{
+        color: #000;
+        font-size: 2.5em;
+        font-weight: bold;
+        padding: .2em 0;
+        text-align: center;
+      }
+    }
+
+    .item-content{
+      display: inline-block;
+      vertical-align: top;
+      padding-top: .5em;
+      width: 70%;
+
+      .name{
+        font-size: 1.2em;
+      }
+
+      .meta{
+        color: #777;
+        font-size: .9em;
+        padding: .2em 0;
+      }
+      
+      .attendee{
+       color: #777;
+        font-size: .9em;
+        padding: .2em 0;
+      }
+    }
+
+    .options{
+      .info{
+        padding: 3em .5em;
+      }
+    }
+  }
+}
+
+
+.meeting-wrapper{
+  .col-sm-5{
+    padding-right: 0px;
+  }
+
+  .meeting-name{
+    h4{
+      color: #5D9CEC;
+      line-height: 1.5em;
+      margin: 0;
+      padding: 1.5em 0 1em 0;
+
+      .status{
+        color: #000;
+
+        &.pending{
+          color: #FFCE54;
+        }
+
+        &.running{
+          color: #8CC152;
+        }
+
+        &.ended{
+          color: #DA4453;
+        }
+      }
+    }
+  }
+
+  .meeting-options{
+    .panel-body{
+      padding: 1em 0;
+    }
+  }
+
+  .timer{
+    .timer-wrapper{
+      font-size: 3em;
+    }
+  }
+  
+  .details,
+  .attendees{
+    ul{
+      list-style: none;
+      padding: 0;
+
+      li{
+        .status{
+          padding: 0 1em;
+          text-align: center;
+
+          .pending{
+            color: #FFCE54;
+          }
+
+          .accepted{
+            color: #8CC152;
+          }
+
+          .refused{
+            color: #DA4453;
+          }
+        }
+      }
+    }
+
+    .info{
+      color: #999;
+      font-size: .9em;
+      font-weight: normal;
+      margin-bottom: .5em;
+      padding-left: 1.5em;
+    }
+
+    .empty{
+      color: #777;
+      font-size: 1.2em;
+      padding: 2em 0;
+      text-align: center;
+    }
+
+    .btn-link{
+      color: #777;
+
+      &:hover{
+        color: #333;
+      }
+    }
+  }
+
+  .details{
+    ul{
+      list-style: none;
+      padding: 0;
+
+      li{
+        padding: .2em;
+
+        .text,
+        .value{
+          display: inline-block;
+          vertical-align: top;
+        }
+
+        .text{
+          font-weight: bold;
+          width: 30%;
+          padding-right: .2em;
+          text-align: right;
+        }
+      }
+    }
+  }
+
+  .attendees{
+    .panel-body{
+      padding-top: .5em;
+    }
+  }
+
+  .topics{
+    .panel-body{
+      padding-top: .5em;
+    }
+  }
+
+  .comments{
+    .panel-body{
+      border-bottom: 1px solid #eee;
+      padding: .5em;
+
+      .comments-list{
+        margin-bottom: 1em;
+
+        .comment-item{
+          border-bottom: 1px solid #F4F6F9;
+          border-radius: 2px;
+          margin: 0 .5em;
+          padding: .5em;
+          padding-bottom: 1em;
+          position: relative;
+
+          .author{
+            font-weight: bold;
+
+            .destroy-btn{
+              color: #666;
+              font-size: 1.1em;
+              padding: .2em .8em;
+              position: absolute;
+              right: 0;
+              top: 0;
+              visibility: hidden;
+
+              &:hover{
+                color: #000;
+              }
+            }
+          }
+
+          .date{
+            color: #999;
+            font-size: .85em;
+            font-weight: normal;
+            padding-left: .5em;
+          }
+
+          .content{
+            line-height: 1.6em;
+            margin-top: .5em;
+          }
+
+          &:hover{
+            background: #F4F6F9;
+
+            .author .destroy-btn{
+              visibility: visible;
+            }
+          }
+        }
+
+        .empty{
+          padding: 1em 0;
+        }
+      }
+
+      .comment-form{
+        border: 1px solid #85B4F2;
+        margin: .5em;
+        padding: .5em;
+
+        .content{
+          border: 0;
+          margin-bottom: .5em;
+          padding: 0;
+          resize: none;
+        }
+
+        .actions{
+          display: none;
+        }
+
+        &.open{
+          .actions{
+            display: block;
+          }
+        }
+      }
+    }
+  }
+
+
+  .activities-wrapper{
+    .milestone-wrap{
+      margin-bottom: 2em;
+
+      .milestone-heading{
+        border-bottom: 1px solid #ddd;
+        margin: 0;
+        margin-bottom: .5em;
+        font-weight: bold;
+        text-transform: uppercase;
+        padding: .5em 0;
+
+        .meta{
+          color: #777;
+          font-size: .85em;
+          font-weight: normal;
+        }
+      }
+
+      .activities-list{
+        .activity-item{
+          border-radius: 2px;
+          padding: .5em;
+          position: relative;
+
+          .empty-fill{
+            display: inline-block;
+            height: 20px;
+            width: 18px;
+          }
+
+          .btn-group{
+            visibility: hidden;
+
+            button{
+              background: transparent;
+              border: 0;
+              box-shadow: none;
+            }
+
+            &.open .dropdown-toggle{
+              background: #eee;
+              box-shadow: none;
+            }
+          }
+
+          .code,
+          .assigned,
+          .info-wrapper{
+            font-size: .9em;
+            display: inline-block;
+            vertical-align: middle;
+          }
+
+          .code{
+            width: 50px;
+            text-align: center;
+          }
+
+          .assigned{
+            overflow: hidden;
+            padding: .1em .2em;
+            position: absolute;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            width: 90px;
+          }
+
+          .info-wrapper{
+            margin-left: 90px;
+            width: 82%;
+
+            .meta{
+              color: #999;
+              display: inline-block;
+              font-size: .85em;
+              padding-left: .5em;
+            }
+          }
+
+          .show-description-btn,
+          .hide-description-btn{
+            cursor: pointer;
+            padding: 0 .2em;
+            text-decoration: underline;
+
+            &:hover{
+              background: #619FCE;
+              color: #FFF;
+            }
+          }
+
+          .description{
+            font-size: .9em;
+            line-height: 1.6em;
+            margin-top: 1em;
+            margin-left: 90px;
+            
+            border-radius: 2px;
+            padding: .5em;
+            position: relative;
+            background: #DFF2FF;
+
+            &:after {
+              bottom: 100%;
+              left: 4%;
+              border: solid transparent;
+              content: " ";
+              height: 0;
+              width: 0;
+              position: absolute;
+              pointer-events: none;
+              border-color: rgba(186, 221, 247, 0);
+              border-bottom-color: #DFF2FF;
+              border-width: 10px;
+              margin-left: -10px;
+            }
+
+          }
+
+          &:hover{
+            background: #EEF7FE;
+
+            & > .btn-group{
+              visibility: visible;
+            }
+          }
+        }
+
+        .empty{
+          color: #777;
+          font-size: 1.5em;
+          text-align: center;
+          padding: 1em 0;
+          padding-top: 2em;
+        }
+      }
+
+      .activity-form{
+        border: 1px solid #FFF;
+        border-radius: 2px;
+        margin-top: .5em;
+        padding: 0 .5em;
+
+        .name{
+          border-bottom: 1px solid #85B4F2;
+
+          span.icon{
+            color: #4A89DC;
+            display: inline-block;
+            font-size: 1.5em;
+            padding-left: .4em;
+            vertical-align: middle;
+          }
+
+          input.form-control{
+            border: 0;
+            border-radius: 0;
+            display: inline-block;
+            font-size: .9em;
+            height: 40px;
+            padding-left: .5em;
+            width: 95%;
+            vertical-align: middle;
+          }
+
+          .selectize-control{
+            display: none;
+            line-height: 0;
+            vertical-align: middle;
+            width: 30%;
+
+            .selectize-input{
+              border: 1px solid transparent;
+              font-size: .9em;
+              text-align: right;
+
+              input{
+                font-size: 1em;
+              }
+
+              &:after{
+                display: none;
+              }
+            }
+
+            .selectize-dropdown{
+              border: 0;
+              border-radius: 2px;
+              box-shadow: 0 0 1px 1px rgba(0,0,0,0.15),0 2px 12px 0 rgba(0,0,0,0.12);
+              padding: .5em;
+              width: 140px;
+            }
+
+            .selectize-dropdown-content{
+              padding: 0;
+
+              .option.active,
+              .option:hover{
+                background: #EEF7FE;
+                border-radius: 2px;
+              }
+            }
+          }
+        }
+
+        .extra-info{
+          display: none;
+
+          textarea{
+            border: 0;
+            font-size: .9em;
+            min-height: 60px;
+            padding: .5em;
+            resize: none;
+            width: 100%;
+          }
+        }
+
+        &.open{
+          border: 1px solid #85B4F2;
+          padding-bottom: .5em;
+
+          input.form-control{
+            width: 65%;
+          }
+
+          .selectize-control{
+            display: inline-block;
+          }
+
+          .extra-info{
+            display: block;
+
+            .action-buttons{
+              .pull-left{
+                span{
+                  cursor: pointer;
+                  display: inline-block;
+                  padding: .3em .5em;
+                }
+              }
+            }
+          }
+        }
+
+      }
+    }
+  }
+
+  .countdown-timer{
+    padding: 1em 0;
+    text-align: center;
+
+    span,
+    .hours,
+    .minutes,
+    .seconds{
+      display: inline-block;
+      font-size: 3em;
+      vertical-align: top;
+    }
+  }
+}
+
+
+
+.activity-form{
+  .date-range{
+    .datepicker.datepicker-inline{
+      width: 245px;
+
+      td{
+        padding: 0 8px;
+      }
+    }
+
+    .start-date,
+    .end-date{
+      border: 1px solid #ccc;
+      border-radius: 2px;
+      display: inline-block;
+      margin–right: 1em;
+      vertical-align: top;
+    }
+  }
+
+  .effort-wrap{
+    input{
+      display: inline-block;
+      margin-right: .5em;
+      text-align: right;
+      width: 30%;
+    }
+
+    span{
+      margin-right: 2em;
+    }
+  }
+
+  .duration-days{
+    display: inline-block;
+    padding-top: 7px;
+    vertical-align: top;
+    width: 20%;
+  }
+}
+
+.activity-modal{
+  .modal-dialog{
+    width: 800px;
+  }
+}
+
+
+.meeting-activities-list{
+  .panel.meeting-name{
+    h4{
+      line-height: 5.5em;
+    }
+  }
+
+  .panel.activities-panel{
+    .panel-heading{
+      .text-label,
+      .dropdown{
+        display: inline-block;
+        vertical-align: middle;
+      }
+
+      .text-label{
+        margin-right: .5em;
+      }
+    }
+  }
+}
+

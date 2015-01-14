@@ -1,0 +1,43 @@
+.col-sm-12
+  = form_for @activity_list, url: @activity_list.persisted? ? activity_list_path(@activity_list, project_id: @project) : activity_lists_path(project_id: @project), html: { class: 'form-horizontal', id: 'activity_list_form' } do |f|
+    - if @activity_list.errors.any?
+      .alert.alert-warning
+        - @activity_list.errors.full_messages.each do |e|
+          = e
+          %br/
+
+    .form-group
+      = f.label :name, class: 'control-label col-sm-3'
+      .col-sm-6
+        = f.text_field :name, class: 'form-control', autofocus: true
+
+    .form-group
+      = f.label :description, class: 'control-label col-sm-3'
+      .col-sm-6
+        = f.text_area :description, class: 'form-control', rows: 4, placeholder: '¿Cual es la descripción de esta fase/componente?'
+
+    .form-group
+      = f.label :list_type, class: 'control-label col-sm-3'
+      .col-sm-6
+        %label.radio-inline
+          = f.radio_button :list_type, :phase, checked: true
+          %span Fase
+
+        %label.radio-inline
+          = f.radio_button :list_type, :component
+          %span Componente
+    .form-group
+      = label_tag :end_date, "Fecha Termino", class: 'control-label col-sm-3'
+      .col-sm-3
+        = text_field_tag 'end_date', nil, :class => 'form-control end-date', placeholder: '(dd/mm/aaaa)'
+
+    .form-group
+      = label_tag :deliverable, "Entregable", class: 'control-label col-sm-3'
+      .col-sm-6
+        = text_area_tag 'deliverable',nil, placeholder: '¿Qué esperas tener cuando finalize esta fase/componente?', class: 'form-control', rows: 4
+
+    .form-group
+      .col-sm-12
+        .pull-right
+          = link_to 'Cancelar', activities_project_path(@project), class: 'btn btn-default'
+          = f.submit 'Guardar', class: 'btn btn-success'

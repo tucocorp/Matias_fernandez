@@ -1,0 +1,235 @@
+.modal.animated.pulse#new-list-form
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %button{ type: "button", class: "close", 'data-dismiss' => "modal" } &times;
+        %h4.modal-title.text-center Crear fase
+
+      = form_for List.new, html: { class: 'form-horizontal', id: 'list_form' } do |f|
+        .modal-body
+          .form-group
+            = f.label :name, class: 'control-label col-sm-3'
+            .col-sm-8
+              = f.text_field :name, class: 'form-control list-name', autofocus: true
+
+          .form-group
+            = f.label :description, class: 'control-label col-sm-3'
+            .col-sm-8
+              = f.text_area :description, class: 'form-control list-description', rows: 4, placeholder: '¿Cual es la descripción de esta fase/componente?'
+
+          .form-group
+            = label_tag :end_date, "Fecha Termino", class: 'control-label col-sm-3'
+            .col-sm-8
+              = text_field_tag 'milestone[end_date]', nil, class: 'form-control milestone-end-date', placeholder: 'dd/mm/aaaa'
+
+          .form-group
+            = label_tag :name, "Entregable", class: 'control-label col-sm-3'
+
+            .col-sm-8
+              = text_area_tag 'milestone[name]',nil, placeholder: 'Lo que se espera tener realizado al cumplir esta fecha', class: 'form-control milestone-name', rows: 4
+
+        .modal-footer
+          = f.hidden_field :list_type, value: 'phase'
+          = hidden_field_tag :project_id, @project.id
+          = submit_tag 'Crear', class: 'btn btn-success new-list-submit-btn'
+          = link_to 'Cancelar', '#', class: 'btn btn-link', data: { dismiss: 'modal' }
+
+.modal.animated.pulse#new-milestone-form
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %button{ type: "button", class: "close", 'data-dismiss' => "modal" } &times;
+        %h4.modal-title.text-center Crear hito
+      
+      = form_for Milestone.new, html: { class: 'form-horizontal', id: 'milestone_form' } do |f|
+        .modal-body
+          .form-group
+            = f.label :list, class: 'control-label col-sm-3'
+            .col-sm-8
+              %p.form-control-static.list-name
+
+          .form-group
+            = f.label :name, class: 'control-label col-sm-3'
+            .col-sm-8
+              = f.text_area :name, class: 'form-control new-milestone-name', autofocus: true, placeholder: 'Lo que se espera tener realizado al cumplir esta fechaaaaa', rows: 4
+
+          .form-group
+            = f.label :date, class: 'control-label col-sm-3'
+            .col-sm-8
+              = f.text_field :end_date, class: 'form-control new-milestone-end-date', placeholder: 'dd/mm/aaaa'
+
+          .form-group
+            = f.label :assigned, class: 'control-label col-sm-3'
+            .col-sm-8
+              = f.select :assigned_id, options_from_collection_for_select(@project.project_members, 'id', 'full_name', nil), { include_blank: true, prompt: 'Seleccione' }, class: 'with-selectize'
+        
+            -# = link_to '', 'data-toggle' => 'modal', 'data-target' => '#create-assigned', class: 'btn btn-sm btn-success' do
+            -#   %i.fa.fa-plus-circle
+            -#   %span Crear usuario
+
+        .modal-footer
+          = submit_tag 'Crear', class: 'btn btn-success new-milestone-submit-btn'
+          = link_to 'Cancelar', '#', class: 'btn btn-link', data: { dismiss: 'modal' }
+          = hidden_field_tag :list_id, "" , class: 'list-id'
+
+.modal.animated.pulse#edit-list-form
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %button{ type: "button", class: "close", 'data-dismiss' => "modal" } &times;
+        %h4.modal-title.text-center Editar Fase
+
+      = form_for :list, method: :put, html: { class: 'form-horizontal', id: 'activity_list_form' } do |f|
+        .modal-body
+          .form-group
+            = f.label :name, class: 'control-label col-sm-3'
+            .col-sm-8
+              = f.text_field :name, class: 'form-control edit-list-name', autofocus: true
+
+          .form-group
+            = f.label :description, class: 'control-label col-sm-3'
+            .col-sm-8
+              = f.text_area :description, class: 'form-control', rows: 4, placeholder: '¿Cual es la descripción de la fase?'
+
+        .modal-footer
+          .pull-left
+            = link_to 'Eliminar', nil, method: :delete, class: 'btn btn-default destroy-list-btn', data: { confirm: '¿Está seguro que desea eliminar esta fase?' }
+          .pull-right
+            = submit_tag 'Guardar', class: 'btn btn-success edit-list-submit-btn'
+            = link_to 'Cancelar', '#', class: 'btn btn-link', data: { dismiss: 'modal' }
+
+.modal.animated.pulse#edit-milestone-form
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %button{ type: "button", class: "close", 'data-dismiss' => "modal" } &times;
+        %h4.modal-title.text-center Editar hito
+      
+      = form_for :milestone, method: :put, html: { class: 'form-horizontal', id: 'milestone_form' } do |f|
+        .modal-body
+          .form-group
+            = f.label :list, class: 'control-label col-sm-3'
+            .col-sm-8
+              %p.form-control-static.list-name
+
+          .form-group
+            = f.label :name, class: 'control-label col-sm-3'
+            .col-sm-8
+              = f.text_area :name, class: 'form-control edit-milestone-name', placeholder: 'Lo que se espera tener realizado al cumplir esta fecha.', rows: 8, autofocus: true
+
+          .form-group
+            = f.label :date, class: 'control-label col-sm-3'
+            .col-sm-8
+              = f.text_field :end_date, class: 'form-control edit-milestone-end-date', placeholder: 'dd/mm/aaaa'
+
+          .form-group
+            = f.label :assigned, class: 'control-label col-sm-3'
+            .col-sm-8
+              = f.select :assigned_id, options_from_collection_for_select(@project.project_members, 'id', 'full_name', nil), { include_blank: true, prompt: 'Seleccione' }, class: 'with-selectize'
+
+        .modal-footer
+          .pull-left
+            = link_to 'Eliminar', nil, method: :delete, class: 'btn btn-default destroy-milestone-btn hidden', data: { confirm: '¿Está seguro que desea eliminar este hito?' }
+          .pull-right
+            = submit_tag 'Guardar', class: 'btn btn-success edit-milestone-submit-btn'
+            = link_to 'Cancelar', '#', class: 'btn btn-link', data: { dismiss: 'modal' }
+            = hidden_field_tag :list_id, "" , class: 'list-id'
+
+
+- unless @roles.nil?
+  / Formulario para invitar usuarios al proyecto
+  .modal#invite-users
+    .modal-dialog
+      .modal-content
+        .modal-header
+          %button{ type: "button", class: "close", 'data-dismiss' => "modal" } &times;
+          %h4.modal-title.text-center Invita un usuario al proyecto
+        .modal-body{style: 'margin-bottom: 20px;'}
+          .form-group
+            .col-sm-7.col-md-offset-1.search
+              = text_field_tag :email ,nil, class: 'form-control search-textbox', placeholder: 'Ingresa un correo electrónico'
+              %p.error-message.text-danger.hidden{style: 'margin-left:50px;'}
+                Ingrese un correo válido
+            = link_to 'Buscar', '#', class: 'btn btn-info col-sm-3  search-user-btn'
+            = hidden_field_tag 'project_id', @project.id, class: 'hidden-project-id'
+
+          .form-group
+            .user-found.text-center.hidden{style: 'margin-top: 60px;'}
+              = form_tag(user_add_to_project_path(0), class: "add-user-form") do 
+                .user-name
+                .button{style: "margin-top: 10px;"}
+                  = submit_tag 'Agregar usuario',class: 'btn btn-success add-user-botton', method: :post
+                  = hidden_field_tag :project_id, params[:id]
+
+          .form-group
+            .user-no-found.hidden.text-center{style: 'margin-top: 60px;'}
+              = form_tag(user_invite_to_project_path(0), class: "add-user-form") do
+                Usuario No Encontrado, ¿Deseas invitar este usuario al proyecto?
+                .button{style: "margin-top: 10px;"}
+                  = submit_tag '¿Invitar usuario?',class: 'btn btn-success', method: :post
+                  = hidden_field_tag :project_id, params[:id]
+                  = hidden_field_tag :email, nil, {:class => 'hidden-email'}
+
+        .modal-footer
+          .pull-right
+            = link_to 'Cancelar', '#', class: 'btn btn-link', data: { dismiss: 'modal' }
+            = hidden_field_tag :list_id, "" , class: 'list-id'
+
+- unless @roles.nil?
+  / listado de miembros de la compañia
+  / .list-company-members#company-members.modal
+  /   .modal-dialog{style: 'width:800px;'}
+  /     .modal-content
+  /       .modal-header
+  /         %button.close{ 'data-dismiss' => 'modal' }
+  /           %span &times;
+  /         %h4 Agregar usuarios al proyecto
+  /       .modal-body
+  /         .users-search
+  /           %form.form-inline{action: 'javascript:void(0);'}
+  /             .input-group.pull-right{style: 'margin-bottom:20px;'}
+  /               .input-group-btn
+  /                 %input.search.form-control{type: 'text', placeholder: 'Buscar usuario'}
+  /                 %button.btn.btn-default
+  /                   .fa.fa-search
+  /           .clearfix
+
+  /         %table.table.table-condensed
+  /           %thead
+  /             %tr
+  /               %th
+  /               %th
+  /               %th Nombre
+  /               %th Correo electrónico
+  /               %th Rol
+  /           %tbody.list
+  /             - User.with_members(@project).each do |user|
+  /               %tr
+  /                 %td{ width: '5%', align: 'center' }
+  /                   - if !user.member.nil?
+  /                     %input{type: 'checkbox', value: user.id, checked: true, disabled: true}
+  /                   - else
+  /                     %input{type: 'checkbox', value: user.id}
+  /                 %td{ width: '50px', align: 'center' }
+  /                   %img{:src => user.avatar.thumb.url, :alt => "", 'data-no-retina' => '', width: 50, height: 50}/
+  /                 %td.name= user.full_name
+  /                 %td.email= user.email
+  /                 %td
+  /                   - if user.member.nil?
+  /                     = select_tag('roles', options_from_collection_for_select(@roles, 'id', 'name'))
+  /                   - elsif user.member.role?(:owner)
+  /                     = select_tag('roles', options_for_select([[I18n.t('project_roles.owner'), '']]), {disabled: true})
+  /                   - else
+  /                     = select_tag('roles', options_from_collection_for_select(@roles, 'id', 'name', user.member.role), {disabled: true})
+
+  /         .paginator-wrapper
+  /           .pagination
+  /       .modal-footer
+  /         = form_tag project_members_path(@project), method: :post do
+  /           %input{type: 'hidden', class: 'user_id', name: 'users[][id]', value: ''}
+  /           %input{type: 'hidden', class: 'role', name: 'users[][role]', value: ''}
+  /         %button.btn.btn-success Agregar usuarios seleccionados
+  /         = link_to '#invite-users', class: 'btn btn-primary', data: { toggle: 'modal', target: '#invite-users', dismiss: 'modal' } do
+  /           %i.fa.fa-plus
+  /           %span Invitar Usuarios 
+  /         %button.btn.btn-default{ 'data-dismiss' => 'modal' } Cancelar

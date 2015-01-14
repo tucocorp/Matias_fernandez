@@ -1,0 +1,27 @@
+- content_for :sub_header do
+  .fa.fa-calendar
+  = link_to 'Mi Calendario', calendar_path
+
+.content
+  #calendar
+
+:javascript
+  
+  calendarEvents = #{current_user.activities.scheduled.map { |a| { title: a.name, start: a.start_date.strftime('%Y-%m-%d'), end: a.end_date.strftime('%Y-%m-%d') } }.to_json};
+
+  $(document).ready(function() {
+    
+    $('#calendar').fullCalendar({
+      aspectRatio: 2.5,
+      header: {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'month,basicWeek,basicDay'
+      },
+      defaultDate: moment().format('YYYY-MM-DD'),
+      editable: true,
+      eventLimit: true, // allow "more" link when too many events
+      events: calendarEvents
+    });
+    
+  });

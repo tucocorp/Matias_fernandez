@@ -1,0 +1,119 @@
+- content_for :sub_header do
+  .fa.fa-dashboard
+  = link_to "Dashboard - #{current_user.short_name}", dashboard_path
+
+- content_for :sub_header_opts do
+  = link_to '#', class: 'btn btn-success new-project-btn' do
+    %i.fa.fa-plus
+    %span Crear proyecto
+
+.content.dashboard-wrapper.clearfix
+  .col-sm-6
+    .panel.panel-default
+      .panel-heading 
+        %h3.panel-title Mis restricciones
+        %span.title-helper= "#{@constraints.pending.count} sin remover"
+      .panel-body
+        .items-list.constraints-list
+          - if @constraints.any?
+            - @constraints.group_by(&:project).each do |project, constraints|
+              .heading= project.name
+              - constraints.each do |constraint|
+                .item
+                  .btn-group
+                    %button.btn.btn-default.btn-xs{ data: { toggle: 'dropdown' } }
+                      %span.caret
+
+                    %ul.dropdown-menu
+                      %li= link_to 'Editar', constraint_path(constraint), 'constraint-id' => constraint.id, class: 'edit-constraint-btn'
+                      %li= link_to 'Eliminar', constraint_path(constraint), 'constraint-id' => constraint.id, class: 'destroy-constraint-btn'
+
+                  %label.checkbox-inline{ class: "#{'removed' if constraint.removed?}" }
+                    %input{ type: 'checkbox', 'constraint-id' => constraint.id, checked: constraint.removed? }
+                    %span.name= constraint.name
+                    %span.meta= constraint.end_date.strftime('%d/%m/%Y')
+
+          - else
+            .empty Sin restricciones
+
+      .panel-footer
+
+    .panel.panel-default
+      .panel-heading
+        %h3.panel-title Actividades
+        %span.title-helper= "#{@activities.pending.count} sin completar"
+      .panel-body
+        - if @activities.any?
+          .items-list.activities-list
+            - @activities.group_by(&:project).each do |project, activities|
+              .heading= project.name
+
+              - activities.each do |activity|
+                .item
+                  -# .btn-group
+                  -#   %button.btn.btn-default.btn-xs{ data: { toggle: 'dropdown' } }
+                  -#     %span.caret
+
+                  -#   %ul.dropdown-menu
+                  -#     %li= link_to 'Editar'
+                  -#     %li= link_to 'Eliminar'
+
+                  %span.status.with-tooltip{ class: activity.status, title: activity.human_status }
+                    %i.fa.fa-circle
+
+                  %span.name= activity.name
+                  %span.meta= activity.end_date.strftime('%d/%m/%Y')
+
+        - else
+          .empty Sin actividades
+
+      .panel-footer
+
+
+  .col-sm-6
+    .panel.panel-default
+      .panel-heading 
+        %h3.panel-title Reuniones
+      .panel-body
+        - if @meetings.any?
+          .items-list
+            - @meetings.group_by(&:project).each do |project, meetings|
+              .heading= project.name
+              - meetings.each do |meeting|
+                = link_to meeting_path(meeting), class: 'item' do
+                  .icon
+                    .fa.fa-calendar
+                  %span= meeting.name
+                  %span.meta= meeting.starts_at.strftime('%d/%m/%Y')
+        - else
+          .empty Sin reuniones próximas
+
+      .panel-footer
+
+    .panel.panel-default
+      .panel-heading 
+        %h3.panel-title Proyectos
+      .panel-body
+        - if @projects.any?
+          .items-list
+            - @projects.each do |project|
+              = link_to project_path(project), class: 'item' do
+                .icon
+                  %span.fa.fa-briefcase
+                %span= project.name
+                %span.meta= "por #{project.projectable.full_name}"
+        - else
+          .empty
+            %div
+              %span Sin proyectos
+              %div= link_to '+ Crear proyecto', '#', class: 'btn btn-sm btn-link new-project-btn'
+
+      .panel-footer
+        - if @projects.any?
+          .clearfix
+            = link_to projects_path, class: 'btn btn-link btn-xs pull-right' do
+              %span Ver todos mis proyectos
+              .fa.fa-arrow-circle-o-right
+
+:javascript
+  window.userCompanies = #{companies_as_json(@companies)};

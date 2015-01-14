@@ -1,0 +1,22 @@
+<p style="font-family: Arial, sans-serfi;">Estimado <%= @user.full_name %>,</p>
+
+<p style="font-family: Arial, sans-serfi;">El usuario <%= @member.full_name %>, ha enviado la evaluación</p>
+
+<p style="font-family: Arial, sans-serfi;">
+  A continuación se muestra un resumen de lo evaluado.
+</p>
+
+<ul>
+  <% @activity_group.activity_group_relationships.each do |ar| %>
+    <li style="font-family: Arial, sans-serfi;">
+      <strong><%= ar.activity.name %></strong>
+      <% if ar.review == "refused" %>
+      	<span style="background-color:da4453;color:FFFFFF;border-radius:3px;font-size:13px;"><%= ar.human_review %></span>
+      <% else%>
+      	<span style="background-color:89bc4f;color:FFFFFF;border-radius:3px;font-size:13px;"><%= ar.human_review %></span>
+      <% end%>
+    </li>
+  <% end %>
+</ul>
+
+<p style="font-family: Arial, sans-serfi;">Atte. Last Planner Push.</p>

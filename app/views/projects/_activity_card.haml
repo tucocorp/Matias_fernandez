@@ -1,0 +1,7 @@
+.activity-wrap{ 'activity-id' => activity.id }
+  .fa.fa-circle.with-tooltip{ class: "#{ activity.constraints.pending.any? ? 'activity.status' : activity.status }", title: activity.human_status  }
+  %span.responsible{ class: "#{'owner' if activity.assigned.try(:user) == current_user }" }= activity.assigned.try(:short_name) or "Sin asignar"
+  %span.name= activity.name
+  .info.clearfix
+    %span.meta.pull-left= l(activity.end_date, format: '%d/%m/%Y')
+    %span.meta.pull-right= "<span class='total'>#{remaining_constraints(activity)}</span> restricciones removidas".html_safe

@@ -1,0 +1,44 @@
+//company pagination
+.paginator-wrapper{
+  .pagination{
+    a:link{
+        color: #428bca;
+    }
+    a:visited{
+        color: #428bca;
+    } 
+    .page{
+      a{
+      margin: 2px;
+      padding: .7em;
+      color: #428bca;
+      background-color: #F5F7FA;
+      border-radius: 2px; 
+      width: 40px; 
+      display: inline-block;
+      }
+    }
+    .current{
+      margin: 2px;
+      padding: .7em;
+      color: white;
+      background-color: #428bca;
+      border-radius: 2px;
+      width: 40px; 
+      display: inline-block;
+
+    }
+    .first{
+      display: none;
+    }
+    .prev{
+      display: none;
+    }
+    .next{
+      display: none;
+    }
+    .last{
+      display: none;
+    }
+  } 
+}

@@ -1,0 +1,25 @@
+- content_for :sub_header do
+  .fa.fa-briefcase
+  = link_to "#{@project.code} - #{@project.name}", project_path(@project)
+
+- content_for :sub_header_opts do
+  - if can? :update, @project
+    = link_to edit_project_path(@project), class: 'btn btn-default' do
+      %i.fa.fa-cog
+      %span Configurar
+
+= render 'projects/sub_menu'
+
+.content
+  .master-plan
+    .timeline
+    
+    = render 'projects/list_wrapper', list: @list, show_activities: true
+
+    .list-wrapper.clearfix
+      .col-sm-1.timeline-item
+        .circle
+
+  .clearfix
+
+= render 'projects/project_modals'

@@ -1,0 +1,38 @@
+- content_for :sub_header do
+  .fa.fa-briefcase
+  = link_to "#{@project.code} - #{@project.name}", project_path
+
+- content_for :sub_header_opts do
+  - if can? :update, @project
+    = link_to '#new-list-form', class: 'btn btn-success new-list-btn' do
+      %i.fa.fa-plus
+      %span Nueva Fase
+
+    = link_to edit_project_path(@project), class: 'btn btn-default' do
+      %i.fa.fa-cog
+      %span Configurar
+
+= render 'sub_menu'
+
+.content
+  .master-plan
+    - if @lists.any?
+      .timeline
+      - @lists.each do |list|
+        = render 'list_wrapper', list: list
+
+      .list-wrapper.clearfix
+        .col-sm-1.timeline-item
+          .circle
+
+    - else
+      .empty-list
+        %h4 No se encuentran fases o hitos
+        %p.text-center
+          = link_to nil, class: 'btn btn-lg btn-success new-list-btn' do
+            %i.fa.fa-plus
+            %span Crea tu primera fase
+
+  .clearfix
+
+= render 'project_modals'

@@ -1,0 +1,73 @@
+.sub-header
+  %h2.pull-left Usuarios
+
+  .pull-right
+    = link_to new_user_path, class: 'btn btn-success' do
+      %i.fa.fa-plus
+      %span Nuevo usuario
+
+  .clearfix
+
+.content-wrapper
+  .sub-menu-wrapper
+    %ul#sub-menu.nav.nav-tabs.navbar-left
+      %li{ class: "#{'active' if(params[:type].nil?)}" }
+        = link_to 'Usuarios habilitados', users_path
+        %span
+      %li{ class: "#{'active' if(params[:type].to_s == 'locked')}" }
+        = link_to 'Usuarios bloqueados', users_path(type: 'locked')
+        %span
+      %li{ class: "#{'active' if(params[:type].to_s == 'all')}" }
+        = link_to 'Todos los usuarios', users_path(type: 'all')
+        %span
+
+    .pull-right
+      %form.form-inline.quick-search{:action => ""}
+        .form-group
+          %input.form-control{type: 'text', name: 'q', placeholder: 'Buscar', value: params[:q].to_s}
+          - unless params[:type].blank?
+            %input{type: 'hidden', name: 'type', value: params[:type].to_s}
+    
+    .clearfix
+
+  .main-content
+    - if @users.any?
+      %table.table.table-hover
+        %thead
+          %tr
+            %th Nombre
+            %th Apellido
+            %th Nombre de usuario
+            %th Correo electrónico
+            %th Último inicio
+            %th 
+        %tbody 
+          - @users.each do |user|
+            %tr
+              %td
+                %span= user.name
+              %td
+                %span= user.last_name
+              %td
+                %span= user.username
+              %td
+                %span= user.email
+              %td
+                - if user.sign_in_count > 0
+                  %span= "Hace #{time_ago_in_words(user.last_sign_in_at)}"
+              %td{ align: 'right' }
+                .btn-group
+                  = link_to edit_user_path(user), title: 'Editar', class: 'btn btn-default btn-sm with-tooltip' do
+                    %i.fa.fa-pencil
+
+                  - if user.locked?
+                    = link_to user_unlock_path(user), title: 'Desbloquear', class: 'btn btn-default btn-sm with-tooltip' do
+                      %i.fa.fa-unlock
+                  - else
+                    = link_to user_lock_path(user), title: 'Bloquear', class: 'btn btn-default btn-sm with-tooltip' do
+                      %i.fa.fa-lock
+      
+      .paginator-wrapper= paginate @users
+    - else
+      .empty-list
+        %h4 No se encontraron usuarios

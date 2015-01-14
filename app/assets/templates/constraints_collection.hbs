@@ -1,0 +1,104 @@
+<div class="clearfix"></div>
+
+<ul>
+  {{#is activity.status 'pending'}}
+    {{#each constraints}}
+      <li constraint-id="{{id}}" class="constraint-item {{status}}">
+
+        {{#if ../meta.can_update}}
+          <div class="btn-group">
+            <button class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+              <span class="caret"></span>
+            </button>
+
+            <ul class="dropdown-menu">
+              <li>
+                <a href="/constraints/{{id}}" class="edit-constraint">Editar</a>
+              </li>
+              <li>
+                <a href="/constraints/{{id}}" data-method="DELETE" data-confirm="¿Estás seguro que deseas eliminar esta restricción?">Eliminar</a>
+              </li>
+            </ul>
+          </div>
+        {{/if}}
+
+
+        <label class="checkbox-inline constraint-item">
+          {{#if ../meta.can_update}}
+            <input type="checkbox" {{#is status 'removed' }}checked="true"{{/is}}>
+          {{else}}
+            <input type="checkbox" {{#is status 'removed' }}checked="true"{{/is}} disabled="true">
+          {{/if}}
+
+          <span>{{ name }}</span>
+        </label>
+      </li>
+    {{else}}
+      <li class="empty constraint-item">Sin restricciones</li>
+    {{/each}}
+  {{else}}
+    {{#each constraints}}
+      <li class="{{status}} constraint-item">
+        <label class="checkbox-inline">
+          <input type="checkbox" {{#is status 'removed' }}checked="true"{{/is}} disabled="true">
+          <span>{{ name }}</span>
+        </label>
+      </li>
+    {{else}}
+      <li class="empty constraint-item">Sin restricciones</li>
+    {{/each}}
+
+  {{/is}}
+
+  {{#is meta.period 'ahead' }}
+    {{#if meta.can_update}}
+      <li class="constraint-item">
+        <a href="#" class="btn-add-constraint">+ Agregar restricción</a>
+      </li>
+    {{/if}}
+  {{/is}}
+</ul>
+
+<div class="actions">
+
+  {{#is activity.status 'pending'}}
+    <p class="control-static-form pull-left status">Pendiente</p>
+  {{else}}
+    {{#is activity.status 'finished'}}
+      <p class="control-static-form pull-left status">Completada</p>
+    {{else}}
+      <p class="control-static-form pull-left status">No completada</p>
+    {{/is}}
+  {{/is}}
+
+  {{#if meta.can_update}}
+    {{#is meta.period 'behind' }}
+      <div class="btn-group pull-left dropdown-wrap">
+        <button class="btn btn-default btn-xs" data-toggle="dropdown">
+          <span class="caret"></span>
+        </button>
+
+        <ul class="dropdown-menu">
+          <li>
+            <a href="/activities/{{ activity.id }}/pending" data-method="POST">Pendiente</a>
+          </li>
+          <li>
+            <a href="/activities/{{ activity.id }}/completed" data-method="POST">Completada</a>
+          </li>
+          <li>
+            <a href="/activities/{{ activity.id }}/uncompleted" class="btn-uncompleted">No completada</a>
+          </li>
+        </ul>
+      </div>
+    {{/is}}
+  {{/if}}
+
+  <div class="btn-group pull-right">
+
+    {{#if activity.can_modify}}
+      <a href="#" class="btn btn-default btn-link btn-edit">Editar</a>
+    {{/if}}
+
+    <a href="#" class="btn btn-default btn-link btn-close">Cerrar</a>
+  </div>
+</div>

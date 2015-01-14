@@ -1,0 +1,36 @@
+/ Formulario para invitar usuarios a la compañia.
+.modal#invite-users
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %button{ type: "button", class: "close", 'data-dismiss' => "modal" } &times;
+        %h4.modal-title.text-center Invita un usuario a compañia
+      .modal-body{style: 'margin-bottom: 20px;'}
+        .form-group
+          .col-sm-7.col-md-offset-1.search
+            = text_field_tag :email ,nil, class: 'form-control search-textbox', placeholder: 'Ingresa un correo electrónico'
+            %p.error-message.text-danger.hidden{style: 'margin-left:50px;'}
+              Ingrese un correo válido
+          = link_to 'Buscar', '#', class: 'btn btn-info col-sm-3  search-user-btn'
+          = hidden_field_tag 'company_id', @company.id, class: 'hidden-company-id'
+        
+        .form-group
+          .user-found.hidden.text-center{style: 'margin-top: 60px;'}
+            = form_tag(user_add_to_company_path(0), class: "add-user-form") do 
+              .user-name
+              .button{style: "margin-top: 10px;"}
+                = submit_tag 'Agregar a compañia',class: 'btn btn-success add-user-botton', method: :post
+                = hidden_field_tag 'company_id', params[:id]
+
+        .form-group
+          .user-no-found.hidden.text-center{style: 'margin-top: 60px;'}
+            = form_tag(user_invite_to_company_path(0), class: "add-user-form") do
+              Usuario No Encontrado, ¿Deseas invitar este usuario a la compañia?
+              .button{style: "margin-top: 10px;"}
+                = submit_tag '¿Invitar usuario?',class: 'btn btn-success', method: :post
+                = hidden_field_tag 'company_id', @company.id
+                = hidden_field_tag :email, nil, {:class => 'hidden-email'}
+
+      .modal-footer
+        .pull-right
+          = link_to 'Cancelar', '#', class: 'btn btn-link', data: { dismiss: 'modal' }

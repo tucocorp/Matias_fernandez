@@ -1,0 +1,51 @@
+- content_for :sub_header do
+  .fa.fa-briefcase
+  = link_to "#{@project.code} - #{@project.name}", project_path
+
+- content_for :sub_header_opts do
+  - if can? :update, @project
+    - if @project.companyProject?
+      = link_to '', 'data-toggle' => 'modal', 'data-target' => '#add-members', class: 'btn btn-success' do
+        %i.fa.fa-plus-circle
+        %span Agregar usuarios
+    - else
+      = link_to '', 'data-toggle' => 'modal', 'data-target' => '#invite-users', class: 'btn btn-success' do
+        %i.fa.fa-plus-circle
+        %span Agregar usuarios
+
+    = link_to edit_project_path(@project), class: 'btn btn-default' do
+      %i.fa.fa-cog
+      %span Configurar
+
+= render 'sub_menu'
+
+.content
+  .members-wrapper.clearfix
+    - @members.each do |member|
+      .member-item.col-sm-12
+        .col-sm-6
+          %a
+            .user-avatar
+              %img{src: asset_path('default-avatar.jpg'), alt: "", width: 50}/
+            %span.name= member.full_name
+            %span.meta= "(#{member.email})"
+
+        .col-sm-6.options
+          - if can? :update, member
+            - if member.role?(:owner)
+              = select_tag('user_role', options_for_select([[I18n.t('project_roles.owner'), '']]), {disabled: true, class: 'form-control'})
+            - else
+              = select_tag('user_role', options_from_collection_for_select(@roles, 'id', 'name', member.role), { 'member-id' => member.id, class: 'form-control' })
+
+          - else
+            %p.form-control-static= member.human_role
+
+
+          .btn-group
+            - unless member.role?(:owner)
+              - if can? :destroy, member
+                = link_to 'Eliminar', project_member_path(member, project_id: @project), method: :delete, title: 'Desvincular del proyecto', 'data-confirm' => '¿Está seguro que desea eliminar este usuario?', class: 'btn btn-default btn-sm with-tooltip'
+    .paginator-wrapper= paginate @members
+
+= render 'project_modals'
+= render 'add_members'

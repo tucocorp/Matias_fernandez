@@ -1,0 +1,102 @@
+.col-sm-12
+  = form_for @activity, url: @activity.persisted? ? activity_path(@activity, activity_list_id: @activity_list) : activities_path(activity_list_id: @activity_list), html: { class: 'form-horizontal', id: 'activity_form' } do |f|
+    - if @activity.errors.any?
+      .alert.alert-warning
+        - @activity.errors.full_messages.each do |e|
+          = e
+          %br/
+
+    .form-group
+      = f.label :name, class: 'control-label col-sm-3'
+      .col-sm-6
+        = f.text_field :name, class: 'form-control', autofocus: true
+    .form-group
+      = f.label :description, class: 'control-label col-sm-3'
+      .col-sm-6
+        = f.text_area :description, class: 'form-control', rows: 4
+    .form-group
+      = f.label :assigned, class: 'control-label col-sm-3'
+      .col-sm-6
+        = f.select :assigned_id, options_from_collection_for_select(@project.project_members, 'id', 'full_name', @activity.assigned_id), { include_blank: true, prompt: 'Seleccione' }, class: 'with-selectize'
+        
+      = link_to '', 'data-toggle' => 'modal', class: 'btn btn-success new_user' do
+        %i.fa.fa-plus-circle
+        %span Crear usuario
+
+
+
+
+    .form-group
+      = f.label :start_activity, class: 'control-label col-sm-3'
+      .col-sm-6
+        = f.select :start_activity_id, options_from_collection_for_select(@activity_list.free_activities, 'id', 'name', @activity.start_activity_id), { include_blank: true, prompt: '¿A que actividad(es) liberas trabajo?' }, class: 'with-selectize'
+
+    .form-group
+      = f.label :milestone, class: 'control-label col-sm-3'
+      .col-sm-6
+        = f.select :milestone_id, options_from_collection_for_select(@activity_list.milestones.order(end_date: :asc), 'id', 'end_date', @activity.milestone_id), { include_blank: true, prompt: '¿A que hito corresponde?' }, class: 'with-selectize'
+
+    .form-group
+      = f.label :duration, class: 'control-label col-sm-3'
+      .col-sm-6
+        = f.select :duration, options_for_select(@activity.durations, @activity.duration), { include_blank: true}, placeholder: '¿Cuantos días crées que te demoras en terminar?', class: 'with-selectize'
+
+    .form-group
+      = f.label :effort, class: 'control-label col-sm-3'
+      .col-sm-6
+        = f.select :effort, options_for_select(@activity.efforts, @activity.effort), { include_blank: true}, placeholder: '¿Cuantas horas creées que demoras en esfuerzo?', class: 'with-selectize'
+    
+    .form-group
+      = f.label :date_type, class: 'control-label col-sm-3'
+      .col-sm-6
+        %label.radio-inline
+          = f.radio_button :date_type, :calendar, checked: true
+          %span Días Calendario
+
+        %label.radio-inline
+          = f.radio_button :date_type, :laboral
+          %span Días Laborales
+
+
+    .form-group
+      = f.label :date, class: 'control-label col-sm-3'
+      .col-sm-3
+        = f.text_field :start_date, class: 'form-control start-date', placeholder: 'Inicio (dd/mm/aaaa)', value: @activity.start_date.blank? ? '' : @activity.start_date.strftime('%d/%m/%Y')
+      .col-sm-3
+        = f.text_field :end_date, class: 'form-control end-date', placeholder: 'Término (dd/mm/aaaa)', value: @activity.end_date.blank? ? '' : @activity.end_date.strftime('%d/%m/%Y')
+
+    - if !@activity.parent_id.nil?
+      .form-group
+        = f.label :parent, class: 'control-label col-sm-3'
+        .col-sm-6
+          = f.select :parent_id, options_from_collection_for_select(@activity_list.activities.where(:parent_id => nil), 'id', 'name', (@activity.try(:parent_id) || @parent_activity.try(:id)) ), { include_blank: true, prompt: 'Seleccione' },class: 'with-selectize'
+        
+
+    / .form-group
+    /   = f.label :critical_level, class: 'control-label col-sm-3'
+    /   .col-sm-6
+    /     %label.radio-inline
+    /       = f.radio_button :critical_level, :low, checked: true
+    /       %span Bajo
+
+    /     %label.radio-inline
+    /       = f.radio_button :critical_level, :medium
+    /       %span Medio
+
+    /     %label.radio-inline
+    /       = f.radio_button :critical_level, :high
+    /       %span Alto
+
+    .form-group
+      .col-sm-12
+        .pull-right
+          = link_to 'Cancelar', activities_project_path(@project), class: 'btn btn-default'
+          = f.submit 'Guardar', class: 'btn btn-success'
+          = f.hidden_field :parent_id, value: params[:parent_id] unless params[:parent_id].nil?
+          = f.hidden_field :parent_start_date, value: @activity_parent.start_date.strftime('%d/%m/%Y') unless params[:parent_id].nil?
+          = f.hidden_field :parent_end_date, value: @activity_parent.end_date.strftime('%d/%m/%Y') unless params[:parent_id].nil? 
+
+
+
+  .clearfix
+= render 'create_assigned'

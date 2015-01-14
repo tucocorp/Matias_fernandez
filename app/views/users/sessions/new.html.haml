@@ -1,0 +1,31 @@
+- unless notice.blank?
+  .alert.alert-info= notice
+
+%h1.signin-title Administra las restricciones de tus proyectos
+%p.signin-sub-title Crea proyectos, agrega actividades, identifica restricciones y controla sus cumplimientos.
+
+= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: 'login-form' }) do |f|
+  %h3 Iniciar sesión
+  %hr
+  - unless alert.blank?
+    %p.alert.alert-danger= alert
+
+  .form-group
+    = f.text_field :login, class: 'form-control', placeholder: 'Nombre de usuario o Correo', autofocus: true, autocomplete: 'off'
+
+  .form-group
+    = f.password_field :password, class: 'form-control', placeholder: 'Contraseña', autocomplete: 'off'
+  
+  .form-group.text-left
+    %label.checkbox-inline
+      = f.check_box :remember_me
+      %span Recordarme
+
+  .form-group
+    = f.submit "Ingresar", class: 'btn btn-primary btn-block'
+
+  .form-group
+    = link_to new_user_registration_path(), class: 'btn btn-success btn-block' do
+      %span Registrarme
+
+  = link_to 'Olvidé mi contraseña', new_user_password_path

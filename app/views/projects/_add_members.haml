@@ -1,0 +1,67 @@
+#add-members.modal
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %button.close{ 'data-dismiss' => 'modal' }
+          %span &times;
+        %h4 Agregar usuarios al proyecto
+      .modal-body
+        .users-search
+          %form.form-inline{action: 'javascript:void(0);'}
+            .input-group.pull-right
+              .input-group-btn
+                %input.search.form-control{type: 'text', placeholder: 'Buscar usuario'}
+                %button.btn.btn-default
+                  .fa.fa-search
+
+          .clearfix
+
+        %table.table.table-condensed
+          %thead
+            %tr
+              %th
+              %th
+              %th Nombre
+              %th Correo electrónico
+              %th Rol
+          %tbody.list
+            - @project.projectable.company_members.each do |company_member|
+            
+              %tr
+                %td{ width: '5%', align: 'center' }
+                  - if @project.members.include?(company_member.user)
+                    %input{type: 'checkbox', value: company_member.user.id, checked: true, disabled: true}
+                  - else
+                    %input{type: 'checkbox', value: company_member.user.id}
+                %td{ width: '50px', align: 'center' }
+                  %img{:src => company_member.user.avatar.thumb.url, :alt => "", 'data-no-retina' => '', width: 50, height: 50}/
+                %td.name= company_member.full_name
+                %td.email= company_member.email
+                %td
+                  - if @project.members.include?(company_member.user)
+                    - if @project.is_owner?(company_member.user)
+                      = select_tag('roles', options_for_select([[I18n.t('project_roles.owner'), '']]), {disabled: true})
+                    - else
+                      = select_tag('roles', options_from_collection_for_select(@roles, 'id', 'name'),{disabled: true})
+                  - else
+                    = select_tag('roles', options_from_collection_for_select(@roles, 'id', 'name', @project.project_members.roles))
+
+        .paginator-wrapper
+          .pagination
+      .modal-footer
+        = form_tag project_members_path(project_id: @project), method: :post do
+          %input{type: 'hidden', class: 'user_id', name: 'users[][id]', value: ''}
+          %input{type: 'hidden', class: 'role', name: 'users[][role]', value: ''}
+
+        %button.btn.btn-success Agregar usuarios seleccionados
+
+        = link_to '#invite-users', class: 'btn btn-primary', data: { toggle: 'modal', target: '#invite-users', dismiss: 'modal' } do
+          %span Invitar Usuarios 
+        
+        %button.btn.btn-default{ 'data-dismiss' => 'modal' } Cancelar
+  
+
+
+
+
+

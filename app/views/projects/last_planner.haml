@@ -1,0 +1,71 @@
+- content_for :sub_header do
+  .fa.fa-briefcase
+  = link_to "#{@project.code} - #{@project.name}", project_path
+
+- content_for :sub_header_opts do
+
+  .btn-group
+    %button.btn.btn-default.focal-date{ 'date-selected' => l(@focal_date, format: '%Y-%m-%d') }
+      %span= l(@focal_date, format: :long)
+      %span.caret
+  
+  .btn-group
+    %button.btn.btn-default.dropdown-toggle{ type: 'button', data: { toggle: 'dropdown' } }
+      %span= "Responsable: <b>#{@assigned.try(:short_name) || 'Todos'}</b>".html_safe
+      %span.caret
+    %ul.dropdown-menu
+      %li{ class: "#{'active' if @assigned.nil?}" }= link_to 'Todos', last_planner_project_path(@project, date: params[:date])
+      - @project.project_members.each do |member|
+        %li{ class: "#{'active' if(@assigned == member) }" }= link_to member.full_name, last_planner_project_path(@project, assigned_id: member.id, date: params[:date])
+
+  - if can? :update, @project
+    = link_to edit_project_path(@project), class: 'btn btn-default' do
+      %i.fa.fa-cog
+      %span Configurar
+
+= render 'sub_menu'
+
+.content.last-planner-wrapper
+  .clearfix
+    .col-sm-4.behind-wrap
+      .heading.text-center
+        %h4 Look Behind
+
+      .week
+        %h5.text-center= "Semana #{date_range_from_query(@behind_activities)}"
+        .activities
+          - if @behind_activities.any?
+            - @behind_activities.each do |activity|
+              = render 'activity_card', activity: activity
+          - else
+            .empty.text-center
+              %h4 Sin actividades
+    
+    .col-sm-8.ahead-wrap
+      .heading.text-center
+        %h4 Look Ahead
+
+      .week.col-sm-6
+        %h5.text-center= "Semana #{date_range_from_query(@one_week_ahead_activities)}"
+        .activities
+          - if @one_week_ahead_activities.any?
+            - @one_week_ahead_activities.each do |activity|
+              = render 'activity_card', activity: activity
+          - else
+            .empty.text-center
+              %h4 Sin actividades
+
+      .week.col-sm-6
+        %h5.text-center= "Semana #{date_range_from_query(@two_weeks_ahead_activities)}"
+        .activities
+          - if @two_weeks_ahead_activities.any?
+            - @two_weeks_ahead_activities.each do |activity|
+              = render 'activity_card', activity: activity
+          - else
+            .empty.text-center
+              %h4 Sin actividades
+
+:javascript
+  window.projectCategories = #{project_categories_as_json(@project.project_categories)};
+  window.projectMembers    = #{project_members_as_json(@project.project_members)};
+  window.currentUserJSON = #{user_as_json(current_user, project: @project)}

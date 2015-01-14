@@ -1,0 +1,40 @@
+<form action="/issues" method="POST" class="">
+  <div class="modal-body">
+
+    <p class="alert">Indique la causa no cumplimiento para la actividad <strong>{{activity.name}}</strong> con fecha de término el {{dateFormat activity.end_date format='DD/MM/YYYY'}}.</p>
+
+    <div class="form-group">
+        <div class="text-center title">Restricciones no removidas o incidencia</div>
+        <ul class="constraints-list">
+          {{#each pendingConstraints}}
+            <li class="{{status}}">
+              <label class="checkbox-inline">
+                <input type="checkbox" value="{{id}}" name="issue[constraint_ids][]">
+                <span>{{name}}</span>
+              </label>
+            </li>
+          {{/each}}
+
+          <li class="is-issue">
+            <label class="checkbox-inline">
+              <input type="checkbox">
+              <span>Incidencia</span>
+            </label>
+          </li>
+        </ul>
+
+    </div>
+
+    <div class="form-group issue-wrapper hidden">
+      <label class="control-label">Incidencia</label>
+      <textarea name="issue[name]" class="form-control" rows="4"></textarea>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <input type="hidden" name="authenticity_token" value="">
+    <input type="hidden" name="issue[activity_id]" value="{{activity.id}}" class="hidden-activity-id">
+    <input type="submit" class="btn btn-success" value="Guardar">
+    <a href="#" data-dismiss="modal" class="btn btn-link">Cancelar</a>
+  </div>
+</form>

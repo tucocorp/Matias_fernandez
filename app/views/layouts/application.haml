@@ -1,0 +1,45 @@
+!!!
+%html
+  %head
+    %title OctoPull
+    %meta{'charset' => "UTF-8"}
+    %meta{ name: 'viewport', content: 'initial-scale=1, maximum-scale=1' }
+    %link{rel: "shortcut icon", href: asset_path('favicon.png')}
+    = yield(:head)
+    = stylesheet_link_tag    'application', media: 'all'
+    = javascript_include_tag 'application'
+    = csrf_meta_tags
+
+  %body{ class: user_signed_in? ? '' : 'login-home' }
+    - if user_signed_in?
+      = render 'shared/main_nav'
+
+      %section.content-wrapper.clearfix
+        .sub-header
+          %h4.pull-left= yield(:sub_header)
+          .pull-right= yield(:sub_header_opts)
+          .clearfix
+
+        = yield
+
+      %footer
+        %p.text-center 2014 Octo Pull
+
+    - else
+      %nav.navbar.navigation-navbar
+        .navbar-header.text-center
+          %a.logo{href: root_path}
+            %img{src: asset_url('logo.png'), alt: '', width: 130}
+
+      .main-wrapper.text-center
+        = yield
+        
+        .container
+          %footer
+            %ul
+              %li= link_to 'Contacto'
+              %li= link_to 'Políticas de privacidad'
+              %li= link_to 'Planes'
+
+    - if Rails.env.production?
+      %script= ENV['TRACKING_CODE'].to_s.html_safe

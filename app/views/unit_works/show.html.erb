@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Start date:</strong>
+  <%= @unit_work.start_date %>
+</p>
+
+<p>
+  <strong>End date:</strong>
+  <%= @unit_work.end_date %>
+</p>
+
+<p>
+  <strong>Activity:</strong>
+  <%= @unit_work.activity_id %>
+</p>
+
+<%= link_to 'Edit', edit_unit_work_path(@unit_work) %> |
+<%= link_to 'Back', unit_works_path %>

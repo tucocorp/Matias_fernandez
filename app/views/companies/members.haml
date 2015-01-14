@@ -1,0 +1,44 @@
+- content_for :sub_header do
+  .fa.fa-building
+  = link_to "#{@company.code} - #{@company.name}", company_path(@company)
+
+- content_for :sub_header_opts do
+  = link_to '#invite-users', class: 'btn btn-success', data: { toggle: 'modal', target: '#invite-users' } do
+    %i.fa.fa-plus
+    %span Invitar Usuarios  
+
+= render 'sub_menu'
+
+.content
+  - if @users.any?
+    .items-list-wrapper.clearfix
+      - if @users.any?
+        - @users.order(role: :desc).each do |member|
+          .col-sm-12.list-item
+            .col-sm-6
+              %a.main-link
+                
+                %img{src: asset_path('default-avatar.jpg'), alt: "", width: 50, style: 'border-radius: 50%;margin-right:1em;'}
+                %span.name= member.full_name
+                %span.meta= "(#{member.email})"
+            .col-sm-6.options
+              - if can? :update, member
+                - if member.role?(:pmo)
+                  = select_tag('user_role', options_for_select([[I18n.t('project_roles.owner'), '']]), {disabled: true, class: 'form-control'})
+                - else
+                  = select_tag('user_role', options_from_collection_for_select(@roles, 'id', 'name', member.role), { 'member-id' => member.id, class: 'form-control' })
+              - else
+                %p.form-control-static= member.human_role
+
+              .btn-group
+                - unless member.role?(:pmo)
+                  - if can? :destroy, member
+                    = link_to 'Eliminar', company_member_path(member, company_id: @company), method: :delete, title: 'Desvincular del proyecto', 'data-confirm' => "¿Está seguro que desea desvincular este usuario de la compañia?", class: 'btn btn-default btn-sm with-tooltip'
+
+      .paginator-wrapper= paginate @users
+
+  - else
+    .empty-list
+      %h4 No se encontraron usuarios
+
+= render 'company_modals'

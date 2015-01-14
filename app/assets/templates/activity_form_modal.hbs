@@ -1,0 +1,70 @@
+<form action="/activities" method="POST" class="form-horizontal activity-form">
+  <div class="modal-body">
+    <div class="form-group">
+      <label class="control-label col-sm-3">Nombre</label>
+      <div class="col-sm-8">
+        <input type="text" name="activity[name]" class="form-control name" autofocus="true">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="control-label col-sm-3">Descripción</label>
+      <div class="col-sm-8">
+        <textarea name="activity[description]" class="form-control description with-autosize" placeholder="Especificaciones de lo que se realizará"></textarea>
+      </div>
+    </div>
+
+    <div class="form-group responsible-select">
+      <label class="control-label col-sm-3">Responsable</label>
+      <div class="col-sm-8">
+        <select class="with-selectize-stickit assigned-id" name="activity[assigned_id]"></select>
+      </div>
+    </div>
+
+{{!--     <div class="form-group effort-wrap">
+      <label class="control-label col-sm-3">Esfuerzo</label>
+      <div class="col-sm-8">
+        <input type="text" class="form-control" placeholder="0:00" name="activity[raw_effort]" autocomplete="off">
+        <span>Horas</span>
+      </div>
+    </div> --}}
+
+    <div class="form-group">
+      <label class="control-label col-sm-3">Duración</label>
+      <div class="col-sm-8 date-range">
+        <div class="calendar-titles">
+          <span style="width: 245px; display: inline-block; text-align: center;">Fecha de Inicio</span>
+          <span style="width: 245px; display: inline-block; text-align: center;">Fecha de Termino</span>
+        </div>
+        <div class="start-date"></div>
+        <div class="end-date"></div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="control-label col-sm-3">Duración</label>
+
+      <div class="col-sm-8">
+        <p class="form-control-static duration-days">0 días</p>
+
+        <label class="radio-inline">
+          <input name="activity[date-type]" type="radio" class="date-type working" value="working">
+          <span>Laborales</span>
+        </label>
+
+        <label class="radio-inline">
+          <input name="activity[date-type]" type="radio" class="date-type calendar" value="calendar">
+          <span>Calendario</span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <input type="hidden" name="authenticity_token" value="">
+    <input type="hidden" class="hidden-start-date" name="activity[start_date]" value="">
+    <input type="hidden" class="hidden-end-date" name="activity[end_date]" value="">
+    <input type="submit" class="btn btn-success" value="Guardar">
+    <a href="#" data-dismiss="modal" class="btn btn-link">Cancelar</a>
+  </div>
+</form>

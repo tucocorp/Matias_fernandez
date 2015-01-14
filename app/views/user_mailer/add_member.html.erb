@@ -1,0 +1,11 @@
+<p style="font-family: Arial, sans-serfi;">Estimado <%= @user.full_name %>,</p>
+
+<p style="font-family: Arial, sans-serfi;">
+  Alguien te ha invitado a participar en el proyecto <%= @project.name %>.
+</p>
+
+<p style="font-family: Arial, sans-serfi;">
+  Para ver el proyecto entra en el siguiente
+  <a href="<%= new_user_registration()%>" class="btn-primary" style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; color: #FFF; text-decoration: none; line-height: 2; font-weight: bold; text-align: center; cursor: pointer; display: inline-block; border-radius: 5px; text-transform: capitalize; background: #37BC9B; margin: 0; padding: 0; border-color: #37BC9B; border-style: solid; border-width: 10px 20px;">link</a>
+</p>
+<p style="font-family: Arial, sans-serfi;">Atte. Octopull.</p>

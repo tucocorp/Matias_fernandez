@@ -1,0 +1,37 @@
+= form_for(resource, as: resource_name, url: password_path(resource_name), html: { class: 'recover-password', method: :put }) do |f|
+  %h3 Cambiar contraseña
+
+  - unless devise_error_messages!.blank?
+    %p.alert.alert-danger= devise_error_messages!
+
+  .form-group.text-left
+    = f.label :password, 'Nueva contraseña'
+    %br/
+    = f.password_field :password, class: 'form-control', autofocus: true, autocomplete: 'off'
+
+  .form-group.text-left
+    = f.label :password_confirmation, 'Confirme su nueva contraseña'
+    %br/
+    = f.password_field :password_confirmation, class: 'form-control', autocomplete: 'off'
+
+  = f.hidden_field :reset_password_token
+  = f.submit 'Cambiar contraseña', class: 'btn btn-success'
+
+
+-# %h1.signin-title Administra las restricciones de tus proyectos
+-# %p.signin-sub-title Crea proyectos, agrega actividades, identifica restricciones y controla sus cumplimientos.
+
+-# = form_for(resource, as: resource_name, url: password_path(resource_name), html: { class: 'recover-password', method: :post }) do |f|
+-#   %h3 ¿Olvidó su constraseña?
+
+-#   - unless devise_error_messages!.blank?
+-#     %p.alert.alert-danger= devise_error_messages!
+  
+-#   .form-group
+-#     %p Ingrese a continuación su nombre de usuario o correo electrónico y le enviaremos un correo con las instrucciones para cambiar su contraseña
+
+-#   .form-group
+-#     = f.text_field :login, class: 'form-control', placeholder: 'Nombre de usuario o Correo', autofocus: true, autocomplete: 'off'
+  
+-#   .text-center
+-#     = f.submit "Recuperar contraseña", class: 'btn btn-primary'

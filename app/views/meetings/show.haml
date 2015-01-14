@@ -1,0 +1,156 @@
+- content_for :sub_header do
+  - content_for :sub_header do
+    .fa.fa-briefcase
+    = link_to "#{@project.code} - #{@project.name}", project_path(@project)
+
+- content_for :sub_header_opts do
+  - if can? :update, @project
+    = link_to edit_project_path(@project), class: 'btn btn-default' do
+      %i.fa.fa-cog
+      %span Configurar
+
+.content-wrapper
+  = render 'projects/sub_menu'
+
+  .content
+    .meeting-wrapper.clearfix
+      .col-sm-5
+        .panel.panel-default.meeting-name
+          .panel-body
+            %h4.text-center
+              %i.fa.fa-circle.status{ class: "#{@meeting.status}" }
+              = "#{@meeting.name} #{l(@meeting.starts_at, format: '%d/%m/%Y')}"
+
+        - if !@meeting.running?
+          - if can? :update, @meeting
+            .panel.panel-default.meeting-options
+              .panel-heading
+                .panel-title Opciones
+
+              .panel-body.text-center
+                .btn-group
+                  - unless @meeting.ended?
+                    = link_to start_meeting_path(@meeting), method: :post, class: 'btn btn-sm btn-default', data: { confirm: '¿Estás seguro que deseas iniciar la reunión?' } do
+                      %i.fa.fa-play
+                      %span Comenzar reunión
+
+                    = link_to resend_invitations_meeting_path(@meeting), method: :post, data: { confirm: '¿Estás seguro que deseas reenviar los correos de invitación?' }, class: 'btn btn-sm btn-default' do
+                      %i.fa.fa-paper-plane
+                      %span Reenviar invitaciones
+
+                  - if @meeting.ended?
+                    = link_to resend_minute_meeting_path(@meeting), method: :post, class: 'btn btn-sm btn-default' do
+                      %i.fa.fa-paper-plane
+                      %span Reenviar minuta
+
+                  = link_to edit_meeting_path(@meeting), class: 'btn btn-sm btn-default' do
+                    %i.fa.fa-pencil
+                    %span Editar
+
+                  = link_to meeting_path(@meeting), method: :delete, data: { confirm: '¿Estás seguro que deseas eliminar esta reunión?' }, class: 'btn btn-sm btn-default' do
+                    %i.fa.fa-trash
+                    %span Eliminar
+
+        - else
+          .panel.panel-default.timer
+            .panel-heading
+              .panel-title Tiempo transcurrido
+
+            .panel-body
+              .timer-wrapper.text-center{ 'started-at' => @meeting.started_at }
+                %span.hours 00
+                %span :
+                %span.minutes 00
+                %span :
+                %span.seconds 00
+
+              .text-center
+                - if can? :update, @meeting
+                  = link_to stop_meeting_path(@meeting), method: :post, class: 'btn btn-link', data: { confirm: '¿Estás seguro que deseas finalizar la reunión? Esto enviará una minuta a cada participante de la reunión y dará inicio al proceso de evaluación de actividades con un plazo de 24 horas.' } do
+                    %i.fa.fa-stop
+                    %span Finalizar reunión
+
+        .panel.panel-default.details
+          .panel-heading
+            .panel-title Detalles
+
+          .panel-body
+            %ul
+              %li
+                %span.text Cuando:
+                %span.value
+                  = l(@meeting.starts_at, format: '%d/%m/%Y %H:%M:%S')
+                  %i Hasta
+                  = l(@meeting.ends_at, format: '%d/%m/%Y %H:%M:%S')
+
+              %li.duration
+                %span.text Duración estimada:
+                %span.value{ 'started-at' => @meeting.starts_at, 'ended-at' => @meeting.ends_at }
+
+            - if @meeting.ended?
+              %ul
+                %li
+                  %span.text Inicio real:
+                  %span.value= l(@meeting.started_at, format: '%d/%m/%Y %H:%M:%S')
+                
+                %li
+                  %span.text Término real:
+                  %span.value= l(@meeting.ended_at, format: '%d/%m/%Y %H:%M:%S')
+                
+                %li.duration
+                  %span.text Duración:
+                  %span.value{ 'started-at' => @meeting.started_at, 'ended-at' => @meeting.ended_at }
+
+        .panel.panel-default.attendees
+          .panel-heading
+            .panel-title Participantes
+
+          .panel-body
+            .info= "Si: #{@meeting.attendees.accepted.count} | No: #{@meeting.attendees.refused.count} | Pendientes: #{@meeting.attendees.pending.count}"
+
+            %ul
+              - @meeting.attendees.each do |attendee|
+                %li
+                  %span.status
+                    %i.fa.fa-circle{ class: attendee.status, title: attendee.human_status }
+                  %span.name= attendee.full_name
+                  %span.meta= "<#{attendee.email}>"
+        
+        .panel.panel-default.topics
+          .panel-heading
+            .panel-title Temas
+
+          .panel-body
+            %ul
+              - if @meeting.topics.any?
+                - @meeting.topics.each do |topic|
+                  %li
+                    %strong= topic.name
+                    %span= topic.description
+              
+              - else
+                .empty Sin temas
+
+        .panel.panel-default.comments
+          .panel-heading
+            .panel-title Acuerdos / Comentarios
+
+          .panel-body
+
+
+      .col-sm-7
+        .panel.panel-default
+          .panel-heading
+            .panel-title Actividades
+          .panel-body.activities-wrapper
+          .panel-footer.text-right
+            = link_to activities_meeting_path(@meeting), class: 'btn btn-sm btn-link' do
+              %span Ver todas las actividades
+              .fa.fa-arrow-circle-o-right
+
+:javascript
+  window.currentMeeting = #{meeting_as_json(@meeting)}
+  window.members = #{project_members_as_json(@project.project_members)}
+  window.milestonesActivities = #{milestones_activities_as_json(@list.milestones)}
+  window.meetingComments = #{meeting_comments_as_json(@meeting.comments)}
+  window.currentUserJSON = #{user_as_json(current_user, project: @project)}

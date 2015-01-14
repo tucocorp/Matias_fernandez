@@ -1,0 +1,10 @@
+- content_for :sub_header do
+  .fa.fa-briefcase
+  = link_to "#{@project.code} - #{@project.name}", project_path
+
+= render 'sub_menu'
+
+.content
+  .form-wrapper
+    = render 'form'
+    .clearfix

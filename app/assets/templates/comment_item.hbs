@@ -1,0 +1,10 @@
+<div class="author">
+  <span>{{comment.user.full_name}}</span>
+  <span class="date">{{dateFormat comment.created_at format="DD/MM/YYYY"}}</span>
+  
+  <a href="#" class="destroy-btn wit-tooltip" title="Eliminar comentario" data-animation="false" data-container="body">
+    <i class="fa fa-trash"></i>
+  </a>
+</div>
+
+<div class="content">{{comment.content}}</div>

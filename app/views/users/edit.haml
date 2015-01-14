@@ -1,0 +1,12 @@
+.sub-title.clearfix
+  %h2 Editar usuario
+
+  .pull-right
+    = link_to 'Cancelar', params[:project_id].nil? ? users_path : members_project_path(params[:project_id]), class: 'btn btn-default'
+    = link_to 'Guardar', nil, class: 'btn btn-success', 'data-submit' => 'user_form'
+
+.separator
+
+.main-content
+  = render 'form'
+  .clearfix

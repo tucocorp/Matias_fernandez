@@ -1,0 +1,65 @@
+.panel.panel-default.col-sm-8.col-sm-offset-2
+  .panel-heading
+    .panel-title= @company.persisted? ? 'Editar información de la empresa' : 'Nueva empresa'
+  
+  = form_for @company, html: { class: 'form-horizontal', id: 'company_form' } do |f|
+    .panel-body
+
+      - if @company.errors.any?
+        .alert.alert-warning
+          - @company.errors.full_messages.each do |e|
+            = e
+            %br/
+
+      .form-group
+        = f.label :name, class: 'control-label col-sm-3'
+        .col-sm-9
+          = f.text_field :name, class: 'form-control', autofocus: true
+
+      .form-group
+        = f.label :initials, class: 'control-label col-sm-3'
+        .col-sm-9
+          = f.text_field :initials, class: 'form-control'
+
+      .form-group
+        = f.label :rut, class: 'control-label col-sm-3'
+        .col-sm-9
+          = f.text_field :rut, class: 'form-control'
+
+      .form-group
+        = f.label :business_name, class: 'control-label col-sm-3'
+        .col-sm-9
+          = f.text_field :business_name, class: 'form-control'
+
+      .form-group
+        = f.label :description, class: 'control-label col-sm-3'
+        .col-sm-9
+          = f.text_area :description, class: 'form-control', rows: 4
+
+      .form-group
+        = f.label :website, class: 'control-label col-sm-3'
+        .col-sm-9
+          = f.text_field :website, class: 'form-control'
+
+      .form-group
+        = f.label 'Contacto', class: 'control-label col-sm-3'
+        .col-sm-4
+          = f.text_field :email, class: 'form-control', placeholder: 'Nombre de contacto'
+        .col-sm-4
+          = f.email_field :email, class: 'form-control', placeholder: 'Correo electrónico'
+
+      .form-group
+        = f.label 'Teléfono contacto', class: 'control-label col-sm-3'
+        .col-sm-9
+          = f.text_field :phone_number, class: 'form-control', placeholder: 'Teléfono fijo'
+
+    .panel-footer
+      .form-group
+        .col-sm-12.text-center
+          = f.submit 'Guardar', class: 'btn btn-success'
+          - unless @company.persisted?
+            = link_to 'Cancelar', companies_path, class: 'btn btn-link'
+          
+          
+            
+            

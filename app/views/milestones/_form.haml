@@ -1,0 +1,37 @@
+.col-sm-12
+  = form_for @milestone, url: @milestone.persisted? ? milestone_path(@milestone, activity_list_id: @phase.id) : milestones_path(activity_list_id: @phase.id) , html: { class: 'form-horizontal', id: 'milestone_form' } do |f|
+    - if @milestone.errors.any?
+      .alert.alert-warning
+        - @milestone.errors.full_messages.each do |e|
+          = e
+          %br/
+
+    .form-group
+      = f.label :date, class: 'control-label col-sm-3'
+      .col-sm-3
+        = f.text_field :end_date, class: 'form-control end-date', placeholder: '(dd/mm/aaaa)', value: @milestone.end_date.blank? ? '' : @milestone.end_date.strftime('%d/%m/%Y')
+    
+    .form-group
+      = f.label :deliverable, class: 'control-label col-sm-3'
+      .col-sm-6
+        = f.text_area :deliverable, class: 'form-control', autofocus: true, placeholder: '¿Qué esperas de tener cuando lleges a este hito?', class: 'form-control', rows: 8   
+    
+    .form-group
+      = f.label :assigned, class: 'control-label col-sm-3'
+      .col-sm-6
+        = f.select :assigned_id, options_from_collection_for_select(@project.project_members, 'id', 'full_name', @milestone.assigned_id), { include_blank: true, prompt: 'Seleccione' }, class: 'with-selectize'
+      
+      = link_to '', 'data-toggle' => 'modal', 'data-target' => '#create-assigned', class: 'btn btn-success' do
+        %i.fa.fa-plus-circle
+        %span Crear usuario
+
+    .form-group
+      .col-sm-12
+        .pull-right
+          = link_to 'Cancelar', phases_project_path(@project), class: 'btn btn-default'
+          = f.submit 'Guardar', class: 'btn btn-success'
+          = f.hidden_field :activity_list_id, value: @phase.id unless @phase.id.nil?
+          = f.hidden_field :latest_milestone_end_date, value: @latest_milestone.end_date.strftime('%d/%m/%Y') unless @latest_milestone.end_date.nil?
+
+
+= render 'create_assigned'

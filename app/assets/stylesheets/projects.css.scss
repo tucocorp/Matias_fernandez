@@ -1,0 +1,379 @@
+.master-plan{
+  background: #FFF;
+  border-radius: 2px;
+  margin: 0 1em;
+  margin-bottom: 1em;
+  padding: 1em 0;
+  position: relative;
+}
+
+.projects-list{
+  background: #FFF;
+  border-radius: 2px;
+  margin: 1em;
+  padding: 1em 1em;
+
+  a{
+    border-bottom: 1px solid #F4F6F9;
+    color: #333;
+    display: block;
+    padding: 1.5em 0;
+    position: relative;
+
+    .icon,
+    .info{
+      float: left;
+    }
+
+    .icon{
+      background: #EEE;
+      border-radius: 50%;
+      height: 60px;
+      font-size: 2em;
+      line-height: 2em;
+      margin-right: .5em;
+      text-align: center;
+      width: 60px;
+    }
+
+    .info{
+      width: 80%;
+
+      .project-name{
+        font-size: 1.2em;
+        // font-weight: bold;
+      }
+
+      .meta{
+        color: #9ca1a8;
+        font-size: .9em;
+        float: left;
+        width: 100%;
+      }
+
+    }
+
+    .company-name{
+      font-size: 1.2em;
+    }
+
+    &:focus,
+    &:hover{
+      background: #F4F6F9;
+      outline: none;
+    }
+  }
+
+  .row:first-child a{
+    border-top: 0;
+  }
+}
+
+// Phases and Components listing
+
+.timeline{
+  background: #eee;
+  left: 47px;
+  height: 97%;
+  margin-top: 1em;
+  position: absolute;
+  width: 4px;
+}
+
+.list-wrapper{
+  margin: 1em 1em;
+
+  .timeline-item{
+    padding-left: 0;
+
+    .circle{
+      background: #FFF;
+      border-radius: 50%;
+      border: 4px solid #eee;
+      margin-left: 4px;
+      // margin-top: 2px;
+      width: 60px;
+      height: 60px;
+    }
+
+    .rhombus{
+      width: 0;
+      height: 0;
+      border: 15px solid transparent;
+      border-bottom-color: #eee;
+      left: 20px;
+      position: relative;
+      top: -5px;
+
+      &:after{
+        content: '';
+        position: absolute;
+        left: -15px;
+        top: 15px;
+        width: 0;
+        height: 0;
+        border: 15px solid transparent;
+        border-top-color: #eee;
+      }
+    }
+  }
+
+  .list-heading{
+    background: #f4f4f4;
+    // border-bottom: 1px solid #ccc;
+    border-radius: 2px;
+    // margin-top: .5em;
+    padding-top: .5em;
+    padding-bottom: .5em;
+
+    .list-name{
+      // margin-left: 2em;
+      padding: .5em 0;
+
+      a{
+        color: #555;
+        display: inline-block;
+        font-size: 1.2em;
+
+        &:hover{
+          color: #000;
+        }
+      }
+
+      span{
+        color: #777;
+        font-size: .9em;
+        margin: 0 .5em;
+        vertical-align: middle;
+      }
+    }
+
+    .list-options{
+      display: none;
+      padding: .5em 0;
+
+      a{
+        font-size: .9em;
+        vertical-align: middle;
+      }
+    }
+
+    &:hover > .list-options{
+      display: block;
+    }
+  }
+
+
+  .list-content{
+    margin-top: .5em;
+    padding: 0;
+
+    .list-item{
+      // border-bottom: 1px solid #ddd;
+      padding: 1em 1em 1em 2.5em;
+      position: relative;
+
+      .item-code{
+        // display: block;
+      }
+
+      .item-info{
+        width: 90%;
+      }
+
+      .item-code-resposible{
+        display: inline-block;
+        float: left;
+        margin-right: .5em;
+
+        .code{
+          font-size: .9em;
+        }
+
+        .responsible{
+          background: #f0f0f0;
+          display: inline-block;
+          font-size: .9em;
+          padding: .2em .8em;
+          width: 110px;
+        }
+      }
+
+      .item-name-date{
+        width: 80%;
+
+        .name{
+          display: block;
+
+          a{
+            color: #444;
+          }
+
+          &:hover > a{
+            color: #000;
+          }
+        }
+
+        .date{
+          color: #777;
+          display: inline-block;
+          font-size: .85em;
+        }
+      }
+
+      .list-options{
+        position: absolute;
+        right: 0;
+        top: 0;
+        margin-top: 1em;
+        margin-right: 1em;
+        display: none;
+      }
+
+      &.milestone{
+        padding: 1em 1em 1em .1em;
+
+        .flag{
+          padding: .3em .5em;
+        }
+      }
+
+      &:hover{
+        // background: #FAFAFA;
+
+        & > .list-options{
+          display: block;
+        }
+      }
+    }
+  }
+}
+
+// Members section
+
+.members-wrapper{
+  background: #FFF;
+  padding: 1em;
+  margin: 0 1em;
+
+  .member-item{
+    border-bottom: 1px solid #F4F6F9;
+    padding: 1em 0;
+
+    a{
+      .user-avatar{
+        display: inline-block;
+        margin-right: 1em;
+        vertical-align: middle;
+
+        img{
+          border-radius: 50%;
+        }
+      }
+
+      .name{
+        color: #333;
+      }
+
+      .meta{
+        color: #777;
+      }
+
+      &:hover{
+        color: #000;
+      }
+    }
+
+    .options{
+      select{
+        display: inline-block;
+        margin-top: .5em;
+        vertical-align: middle;
+        width: 180px;
+      }
+
+      a{
+        display: inline-block;
+        margin-top: .6em;
+        margin-left: 1em;
+        vertical-align: middle;
+      }
+    }
+
+    &:hover{
+      background: #F4F6F9;
+    }
+  }
+}
+
+#add-members{
+  a:link{
+        color: white;
+  }
+  .modal-dialog{
+    width: 800px;
+
+    .users-search{
+      padding-bottom: 10px;
+    }
+  }
+  .pagination{
+    margin: 0
+  }
+}
+
+//project pagination
+.paginator-wrapper{
+  .pagination{
+    a:link{
+        color: #428bca;
+    }
+    a:visited{
+        color: #428bca;
+    } 
+    .page{
+      a{
+      margin: 2px;
+      padding: .7em;
+      color: #428bca;
+      background-color: #F5F7FA;
+      border-radius: 2px; 
+      width: 40px; 
+      display: inline-block;
+      }
+    }
+    .current{
+      margin: 2px;
+      padding: .7em;
+      color: white;
+      background-color: #428bca;
+      border-radius: 2px;
+      width: 40px; 
+      display: inline-block;
+
+    }
+    .first{
+      display: none;
+    }
+    .prev{
+      display: none;
+    }
+    .next{
+      display: none;
+    }
+    .last{
+      display: none;
+    }
+  } 
+}
+
+// Activities
+
+#new-activity-form,
+#edit-activity-form{
+  .duration-days{
+    display: inline-block;
+    padding: .5em;
+    vertical-align: top;
+  }
+}

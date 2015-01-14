@@ -1,0 +1,40 @@
+es:
+  list_type:
+    phase: Fase
+    component: Componente
+  statuses:
+    active: Activo
+    archived: Archivado
+    accepted: Aceptada
+    refused: Rechazada
+    unevaluated: Sin evaluar
+    finished: Finalizada
+    unfinished: No cumplida
+    pending: Pendiente
+    running: En curso
+    ended: Finalizada
+    scheduled: Agendada
+    in_evaluation: En evaluación
+    evaluation_ended: Evaluación terminada
+    constraints: Restricciones pendientes
+  project_roles:
+    owner: Creador
+    manager: Administrador
+    collaborator: Colaborador
+  company_roles:
+    pmo: PMO
+    manager: Administrador
+    collaborator: Colaborador
+  project:
+    members:
+      zero: No hay miembros
+      one: '%{count} miembro'
+      other: '%{count} miembros'
+    owner_group: Propietarios
+  meeting:
+    pull_name: Sesión de Pull Planning
+  attendee:
+    statuses:
+      pending: Pendiente
+      accepted: Aceptada
+      refused: Rechazada

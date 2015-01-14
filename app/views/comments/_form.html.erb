@@ -1,0 +1,22 @@
+<% @commentable ||= commentable %>
+<% @comment ||= comment %>
+
+<%= form_for [@commentable, @comment] do |f| %>
+  <% if @comment.errors.any? %>
+    <div class="error_messages">
+      <h2>Porfavor corrige los siguientes errores</h2>
+      <ul>
+      <% @comment.error.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f .text_area :content, rows: 8, class: "form-control", placeholder: "Escribe si tienes alguna duda, reclamo, información o inquietud que tengas con respecto a las actividades asignadas. "%>
+  </div>
+  <div class="actions">
+    <%= f.submit%>
+  </div>
+<% end %>

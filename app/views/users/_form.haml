@@ -1,0 +1,122 @@
+.col-sm-12
+  = form_for @user, html: { class: 'form-horizontal', id: 'user_form' } do |f|
+    .form-group.form-heading
+      .col-sm-12
+        %h4 Información general
+
+    - if @user.errors.any?
+      .alert.alert-warning
+        - @user.errors.full_messages.each do |e|
+          = e
+          %br/
+
+    / .form-group
+    /   = f.label :avatar, class: 'control-label col-sm-3'
+    /   .col-sm-6.profile-image
+    /     = image_tag @user.avatar.medium.url, { @user.avatar.path.nil? ? nil : 'data-no-retina' => '' }
+    /     = f.file_field :avatar
+    /     = link_to nil, class: 'btn btn-sm btn-default' do
+    /       .fa.fa-camera
+    /       %span Seleccionar imágen
+
+    .form-group
+      = f.label :username, class: 'control-label col-sm-3'
+      .col-sm-6
+        = f.text_field :username, class: 'form-control'
+
+    .form-group
+      = f.label :name, class: 'control-label col-sm-3'
+      .col-sm-3
+        = f.text_field :name, class: 'form-control', placeholder: 'Nombres'
+      .col-sm-3
+        = f.text_field :last_name, class: 'form-control', placeholder: 'Apellidos'
+
+    .form-group
+      = f.label :email, class: 'control-label col-sm-3'
+      .col-sm-6
+        = f.email_field :email, class: 'form-control'
+
+    .form-group
+      = f.label :position, class: 'control-label col-sm-3'
+      .col-sm-6
+        = f.text_field :position, class: 'form-control'
+
+    .form-group.date-selects
+      = f.label :date_of_birth, class: 'control-label col-sm-3'
+      .col-sm-6
+        = f.date_select :date_of_birth, { start_year: 1900, end_year: Time.now.year, prompt: true }, { class: 'form-control' }
+    
+    .form-group
+      = f.label :address, class: 'control-label col-sm-3'
+      .col-sm-6
+        = f.text_field :address, class: 'form-control'
+
+    .form-group
+      = f.label 'Teléfonos', class: 'control-label col-sm-3'
+      .col-sm-3
+        = f.text_field :phone_number, class: 'form-control', placeholder: 'Teléfono fijo'
+      .col-sm-3
+        = f.text_field :cell_phone, class: 'form-control', placeholder: 'Teléfono celular'
+
+    - if @user.new_record?
+      .form-group
+        = f.label 'Contraseña', class: 'control-label col-sm-3'
+        .col-sm-3
+          = f.password_field :password, class: 'form-control', placeholder: 'Contraseña'
+        .col-sm-3
+          = f.password_field :password_confirmation, class: 'form-control', placeholder: 'Confirme su contraseña'
+
+    .form-group
+      .col-sm-12
+        .pull-right
+          = link_to 'Cancelar', params[:project_id].nil? ? users_path : members_project_path(params[:project_id]), class: 'btn btn-default'
+          = f.hidden_field :project_id, value: @project.id unless @project.blank?
+          = f.hidden_field :company_id, value: @company.id unless @company.blank?
+          = f.submit 'Guardar', class: 'btn btn-success'
+
+- if @user.persisted?
+  .col-sm-12
+    = form_for @user, html: { class: 'form-horizontal', id: 'password_form' } do |f|
+      .form-group.form-heading
+        .col-sm-12
+          %h4 Cambiar contraseña
+      
+      .form-group
+        = f.label :password, class: 'control-label col-sm-3'
+        .col-sm-6
+          = f.password_field :password, class: 'form-control'
+
+      .form-group
+        = f.label :password_confirmation, class: 'control-label col-sm-3'
+        .col-sm-6
+          = f.password_field :password_confirmation, class: 'form-control'
+
+      .form-group
+        .col-sm-12
+          .pull-right
+            = link_to 'Cancelar', params[:project_id].nil? ? users_path : members_project_path(params[:project_id]), class: 'btn btn-default'
+            = f.submit 'Guardar', name: 'update_password', class: 'btn btn-success'
+
+:javascript
+  $(function(){
+    $('.profile-image a').on('click', function(e){
+      e.preventDefault();
+      $('.profile-image input[type="file"]').trigger('click');
+    });
+
+    $('.profile-image input[type="file"]').on('change', function(obj){
+      if(window.FileReader){
+        var reader = new FileReader();
+        var target = null;
+
+        reader.onload = function(e){
+          target =  e.target || e.srcElement;
+          $('.profile-image img')
+            .prop("src", target.result)
+            .css('width', '92px')
+            .css('height', '92px');
+        };
+        reader.readAsDataURL(obj.target.files[0]);
+      }
+    });
+  });

@@ -1,0 +1,43 @@
+- content_for :sub_header do
+  .fa.fa-building
+  = link_to 'Empresas', companies_path
+
+- content_for :sub_header_opts do
+  = link_to new_company_path, class: 'btn btn-success' do
+    %i.fa.fa-plus
+    %span Nueva Empresa
+
+.content-wrapper
+  .sub-menu-wrapper
+    %ul#sub-menu.nav.nav-tabs.navbar-left
+      %li.active
+        = link_to 'Todas las empresas', companies_path
+        %span
+
+    .pull-right
+      %form.form-inline.quick-search{:action => ""}
+        .form-group
+          %input.form-control{type: 'text', name: 'q', placeholder: 'Buscar', value: params[:q].to_s}
+          - unless params[:type].blank?
+            %input{type: 'hidden', name: 'type', value: params[:type].to_s}
+
+    .clearfix
+
+  .content
+    .items-list-wrapper.clearfix
+      - @companies.each do |company|
+        .col-sm-12.list-item
+          .col-sm-6
+            = link_to projects_company_path(company), class: 'main-link' do
+              .icon
+                .fa.fa-building
+
+              %span.name= company.full_name
+              %span.meta= ("#{company.contact_name} #{company.email}")
+
+          .col-sm-6.options
+            .info= "#{company.projects.count} Proyectos"
+            = "|"
+            .info= "#{company.members.count} Miembros"
+            
+      .paginator-wrapper= paginate @companies

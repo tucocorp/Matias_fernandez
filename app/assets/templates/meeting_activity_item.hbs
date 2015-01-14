@@ -1,0 +1,45 @@
+{{#with activity}}
+  {{#if can_modify}}
+    <div class="btn-group">
+
+      <button class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+        <span class="caret"></span>
+      </button>
+
+      <ul class="dropdown-menu" role="menu">
+        <li>
+          <a href="#" class="edit-btn">
+            <i class="fa fa-pencil"></i>
+            <span>Editar</span>
+          </a>
+        </li>
+
+        <li>
+          <a href="#" class="destroy-btn">
+            <i class="fa fa-trash"></i>
+            <span>Eliminar</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  {{else}}
+    <div class="empty-fill"></div>
+  {{/if}}
+
+  <span class="assigned" title="{{assigned.short_name}}" data-animation="false">{{#if assigned}}{{assigned.short_name}}{{else}}Sin Asignar{{/if}}</span>
+
+  <div class="info-wrapper">
+    <span class="name">{{name}}</span>
+
+    {{#if description}}
+      <a href="#" class="show-description-btn">más...</a>
+      <a href="#" class="hide-description-btn hidden">menos...</a>
+    {{/if}}
+
+    {{#if end_date}}
+      <span class="meta">({{dateFormat end_date format="DD/MM/YYYY"}})</span>
+    {{/if}}
+  </div>
+
+  <div class="description hidden">{{description}}</div>
+{{/with}}
